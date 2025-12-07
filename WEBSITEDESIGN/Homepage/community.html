@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;900&display=swap" rel="stylesheet">
+  <title>SHAKTI-IND — Community</title>
+  <style>
+    :root{
+      --bg: #ffffff;
+      --muted: #f5f6f8;
+      --accent1: #FF9933; /* saffron */
+      --accent2: #138808; /* green */
+      --text: #222;
+      --left-width: 40%;
+      --right-width: 60%;
+      --gap: 20px;
+      --card-radius: 12px;
+    ::-webkit-scrollbar{display:none;} }
+
+    *{box-sizing:border-box}
+    body{
+      font-family: 'Poppins', sans-serif;
+      margin:0; padding:0;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      overflow:hidden;
+    }
+
+    /* top logos (keeps your original style) */
+    .brand{
+      position:fixed; left:24px; top:18px; z-index:40;
+      display:flex; gap:8px; align-items:center;
+    }
+    .brand .title{font-weight:900; letter-spacing:2px; font-size:1rem; background:linear-gradient(90deg,var(--accent1) 50%,var(--accent2) 50%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+    .brand .sub{font-weight:900; font-size:0.9rem; margin-top:18px; display:block; background:linear-gradient(90deg,var(--accent1) 30%,var(--accent2) 40%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+
+    /* messenger button */
+    .messenger-btn{
+      position:fixed; right:20px; top:18px; z-index:40; background:var(--accent2); color:#fff; border-radius:10px; padding:10px 14px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    /* back to home (vertical on right edge) */
+    .back-home{
+      position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:30; writing-mode:vertical-rl; text-orientation:mixed; background:transparent; padding:8px 12px; color:var(--accent2); font-weight:600; cursor:pointer;
+    }
+
+    /* main layout */
+    .container{
+      display:flex; height:100vh; gap:var(--gap); padding:72px 24px 24px 24px; /* leave room for top */
+      align-items:flex-start;
+    }
+
+    .left{
+      width:var(--left-width); max-width:48%; min-width:280px; height:calc(100vh - 96px); overflow:auto; scrollbar-width:none; -ms-overflow-style:none;; padding:20px; background:linear-gradient(180deg, #fff,#fcfcfc); border-radius:14px; box-shadow:0 6px 24px rgba(16,24,40,0.06);
+    }
+
+    .right{
+      width:var(--right-width); flex:1; height:calc(100vh - 96px); overflow:auto; scrollbar-width:none; -ms-overflow-style:none;; padding:20px; background:#ffffff; border-radius:14px;
+    }
+
+    /* Today's communities feed on left */
+    .section-title{font-weight:500; margin:6px 0 14px 0}
+    .top-feed{display:flex; flex-direction:column; gap:16px}
+
+    .community-card{
+      background:#fff; border-radius:var(--card-radius); padding:14px; box-shadow:0 6px 18px rgba(16,24,40,0.04); display:flex; flex-direction:column; gap:10px;
+    }
+
+    .community-card .head{display:flex; justify-content:space-between; align-items:center}
+    .community-name{font-weight:500}
+    .live-badge{background:#ffefdb; color:var(--accent1); padding:6px 8px; border-radius:999px; font-weight:500; font-size:12px}
+
+    .chat-box{height:180px; background:#fbfbfd; border-radius:10px; padding:10px; overflow:auto; scrollbar-width:none; -ms-overflow-style:none;; border:1px solid #f0f0f4}
+    .msg{margin:8px 0; font-size:14px}
+    .msg .meta{font-size:12px; color:#8a8a9b}
+
+    .cta-create{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .create-btn{background:#3b82f6; color:#fff; border:none; padding:10px 12px; border-radius:10px; cursor:pointer; transition:0.2s;}
+
+    /* right side controls */
+    .search-bar{display:flex; gap:8px; align-items:center; margin-bottom:12px}
+    .search-bar input{flex:1; padding:12px 14px; border-radius:10px; border:1px solid #e6e6ef; background:#fff}
+    .search-bar .filter{padding:10px 12px; border-radius:10px; background:#fff; border:1px solid #e6e6ef}
+
+    .communities-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px}
+    .comm-item{background:#fff; padding:12px; border-radius:12px; box-shadow:0 6px 12px rgba(16,24,40,0.04); cursor:pointer}
+    .comm-item h4{margin:0 0 6px 0}
+    .comm-item p{margin:0; font-size:13px; color:#666}
+
+    .joined-section{margin-top:20px}
+    .joined-list{display:flex; flex-direction:column; gap:10px}
+
+    /* responsive small screens */
+    @media (max-width:900px){
+      .container{flex-direction:column; padding-top:100px}
+      .left, .right{width:100%; max-width:none}
+      .back-home{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="brand">
+    <div class="title">SHAKTI-<span style="color:var(--accent2)">IND Community</span></div>
+  </div>
+
+  <button class="messenger-btn" onclick="toggleMessenger()">Messenger</button>
+  <div class="back-home" onclick="goHome()">← Back to Home</div>
+
+  <div class="container">
+    <!-- LEFT: Today's feed (40%) -->
+    <aside class="left">
+      <div class="section-title">Today's communities — Top live</div>
+      <div class="top-feed">
+        <!-- Card 1 -->
+        <div class="community-card">
+          <div class="head">
+            <div class="community-name">Mukti Community</div>
+            <div class="live-badge">LIVE</div>
+          </div>
+          <div class="chat-box" id="chat-mukti">
+            <!-- sample messages -->
+            <div class="msg"><strong>Anita</strong> <span class="meta">· 2m</span><div>Anyone knows free legal aid in Hyderabad?</div></div>
+            <div class="msg"><strong>Ravi</strong> <span class="meta">· 1m</span><div>Yes — check our pinned resources</div></div>
+            <div class="msg"><strong>Meera</strong> <span class="meta">· now</span><div>I can help with translation</div></div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px">
+            <input placeholder="Write a quick message" style="flex:1; padding:10px; border-radius:8px; border:1px solid #eee">
+            <button class="create-btn">Send</button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="community-card">
+          <div class="head">
+            <div class="community-name">Street Safety</div>
+            <div class="live-badge">LIVE</div>
+          </div>
+          <div class="chat-box" id="chat-safety">
+            <div class="msg"><strong>Host</strong> <span class="meta">· 5m</span><div>Join us for a quick safety drill at 6 PM</div></div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px">
+            <input placeholder="Write a quick message" style="flex:1; padding:10px; border-radius:8px; border:1px solid #eee">
+            <button class="create-btn">Send</button>
+          </div>
+        </div>
+
+        <!-- After three placeholder (create community prompt) -->
+        <div class="community-card">
+          <div class="head"><div class="community-name">No more live chats</div><div style="font-size:12px;color:#888">Create one</div></div>
+          <div style="padding:8px 0">When will you create a community? <strong>Create one now</strong></div>
+          <div style="display:flex; justify-content:flex-end"><button class="create-btn" onclick="createCommunity()">Create Community</button></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Communities (60%) -->
+    <main class="right">
+      <div class="search-bar">
+        <input id="search" placeholder="Search communities — e.g. education, safety, health" oninput="filterCommunities()" />
+        <div class="filter">All</div>
+      </div>
+
+      <div class="section-title">Tremendous communities</div>
+      <div class="communities-list" id="tremendous-communities">
+        <div class="comm-item" data-name="Community Champions"><h4>Community Champions</h4><p>High-impact projects & mentors</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+        <div class="comm-item" data-name="City Volunteers"><h4>City Volunteers</h4><p>Organised volunteer drives</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+        <div class="comm-item" data-name="Women Empower"><h4>Women Empower</h4><p>Programs & skill-building</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+      </div>
+
+      <div class="section-title">All communities</div>
+      <div class="communities-list" id="all-communities">
+        <!-- sample communities -- the JS will populate too -->
+        <div class="comm-item" data-name="Mukti Community"><h4>Mukti Community</h4><p>Support and resources</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+        <div class="comm-item" data-name="Street Safety"><h4>Street Safety</h4><p>Local safety and patrols</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+        <div class="comm-item" data-name="Women Health"><h4>Women Health</h4><p>Health tips & doctors</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+        <div class="comm-item" data-name="Local Jobs"><h4>Local Jobs</h4><p>Gigs and hiring</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+        <div class="comm-item" data-name="Education Help"><h4>Education Help</h4><p>Tutoring & materials</p><div style="margin-top:8px"><button class="create-btn" onclick="toggleJoin(this, '$1')">Join</button> <button class="create-btn" onclick="fiveMinChat('$1')">5‑min Chat</button></div></div>
+      </div>
+
+      <div class="joined-section">
+        <div class="section-title">Your communities (joined)</div>
+        <div class="joined-list" id="joined-list">
+          <div class="comm-item"><h4>Mukti Community</h4><p>Joined • Active</p></div>
+          <div class="comm-item"><h4>Education Help</h4><p>Joined • Quiet</p></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function goHome(){
+      window.location.href = 'HP2.html';
+    }
+
+    function toggleMessenger(){
+      window.location.href = 'chat.html';
+    }
+
+    function createCommunity(){
+      const name = prompt('Community name');
+      if(!name) return;
+      const list = document.getElementById('all-communities');
+      const card = document.createElement('div');
+      card.className='comm-item'; card.setAttribute('data-name', name);
+      card.innerHTML = '<h4>'+name+'</h4><p>New community</p><div style="margin-top:8px"><button class="create-btn">Join</button></div>';
+      list.prepend(card);
+      // attach listener to the new button
+      const btn = card.querySelector('button');
+      btn.addEventListener('click', function(){ toggleJoin(btn, name); });
+      alert('Community created: '+name);
+    }
+
+    function filterCommunities(){
+      const q = document.getElementById('search').value.toLowerCase();
+      document.querySelectorAll('#all-communities .comm-item, #tremendous-communities .comm-item').forEach(function(el){
+        const name = (el.getAttribute('data-name')||'').toLowerCase();
+        el.style.display = name.includes(q) ? '' : 'none';
+      });
+    }
+
+    function toggleJoin(btn, name){
+      const joinedList = document.getElementById('joined-list');
+      const isJoined = btn.dataset.joined === '1';
+      if(!isJoined){
+        btn.textContent = 'Joined'; btn.dataset.joined = '1'; btn.style.opacity = '0.85';
+        const item = document.createElement('div');
+        item.className='comm-item';
+        item.setAttribute('data-name', name);
+        item.innerHTML = '<h4>'+name+'</h4><p>Joined • Active</p><div style="margin-top:8px"><button class="create-btn">Leave</button></div>';
+        const leaveBtn = item.querySelector('button');
+        leaveBtn.addEventListener('click', function(){ leaveCommunity(leaveBtn, name); });
+        joinedList.prepend(item);
+      } else {
+        alert('You have already joined '+name);
+      }
+    }
+
+    function fiveMinChat(name){ alert('Accessing 5‑minute chat for '+name+' (implement paywall or timer)'); }
+
+    function leaveCommunity(btn, name){
+      const parent = btn.closest('.comm-item');
+      if(parent) parent.remove();
+      // reset join buttons matching this name
+      document.querySelectorAll('.comm-item').forEach(function(ci){
+        if((ci.getAttribute('data-name')||'') === name){
+          const jb = ci.querySelector('button');
+          if(jb){ jb.textContent='Join'; jb.dataset.joined='0'; jb.style.opacity='1'; jb.onclick = function(){ toggleJoin(jb, name); } }
+        }
+      });
+    }
+
+    // Simulate live chat messages for a more real demo
+    var demoMessages = [
+      'Can anyone help with documents?',
+      'There is a meeting at 5 PM near the community hall.',
+      'Offering free tutoring this weekend.',
+      'Has anyone contacted the local authority about streetlights?',
+      'We need more volunteers for the drive on Sunday.',
+      'Thanks — that was helpful!',
+      'Sharing verified resources in the pinned post.',
+      'I can bring snacks for the event.',
+      'Looking for a sewing machine donation.'
+    ];
+
+    function appendLiveMessage(chatId){
+      var box = document.getElementById(chatId);
+      if(!box) return;
+      var whoList = ['Anita','Ravi','Meera','Host','Sania','Deepak','Priya'];
+      var who = whoList[Math.floor(Math.random()*whoList.length)];
+      var text = demoMessages[Math.floor(Math.random()*demoMessages.length)];
+      var time = new Date();
+      var mins = time.getHours() + ':' + String(time.getMinutes()).padStart(2,'0');
+      var el = document.createElement('div');
+      el.className='msg';
+      el.innerHTML = '<span style="font-weight:500">'+who+'</span> <span class="meta">· '+mins+'</span><div>'+text+'</div>';
+      box.appendChild(el);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // start interval to add live messages to top chats
+    setInterval(function(){ appendLiveMessage('chat-mukti'); }, 4200);
+    setInterval(function(){ appendLiveMessage('chat-safety'); }, 6100);
+
+  </script>
+</body>
+</html>

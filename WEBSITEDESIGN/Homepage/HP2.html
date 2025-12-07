@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;900&display=swap" rel="stylesheet">
+    <title>SHAKTI-IND Home</title>
+    <style>
+    :root {
+        --background-color: hsl(60, 18%, 97%);
+        --text-color: #333;
+        --saffron: #FF9933;
+        --green: #138808;
+        --logo-height: 80px;
+        --container-margin: 20px; /* New margin to separate it from the edges */
+        --container-border-radius: 12px; /* Defines the corner bend */
+        /* ... existing variables ... */
+        --logo-height: 100px; /* Increased for logo/stories clearance */
+        --elegant-bg: #ffffff; /* Added back elegant background color */
+    
+        /* ADDED MISSING VARIABLES FOR RIGHT SIDE POSITIONING: */
+        --header-offset: 90px; /* Safer estimated height of the top-right info-header */
+        --profile-card-width: 280px; /* Define profile card width */
+        --nav-bar-width: 50px; /* Width for the vertical icon bar */
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+        background: var(--background-color);
+        transition: background 0.3s ease;
+
+        /* Start hidden to prevent flash */
+        opacity: 0;
+        transform: scale(2);
+        transition: opacity 0.2s ease;
+    }
+
+    /* Logo Styling */
+    .logo {
+        position: fixed;
+        top: 24px; 
+        left: 24px;
+        font-weight: 900;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        background: linear-gradient(90deg, var(--saffron) 50%, var(--green) 50%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        z-index: 20;
+        transition: all 0.9s ease-out 0.2s;
+    }
+
+    /* Search bar beside logo */
+.top-search-bar {
+    position: fixed;
+    top: 24px;
+    left: 17%; /* Adjust spacing from logo */
+    z-index: 20;
+}
+
+.top-search-bar input {
+    padding: 8px 14px;
+    width: 220px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 0.9rem;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: 0.2s;
+}
+
+/* Clean hover + active effect */
+.top-search-bar input:focus {
+    border-color: var(--green);
+    box-shadow: 0 2px 10px rgba(19,136,8,0.15);
+}
+
+/* --- New Search Results Panel Styling --- */
+.search-results {
+    position: absolute;
+    top: 48px; /* Position below the input field */
+    left: 0;
+    width: 220px; /* Same width as input */
+    max-height: 300px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    z-index: 50; /* Higher z-index to overlap other elements */
+    overflow-y: auto;
+    display: none; /* Initially hidden */
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+    background-color: #f0f0f0;
+}
+
+.search-result-item .search-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: #eee;
+    flex-shrink: 0;
+}
+
+.search-result-item .search-username {
+    font-weight: 600;
+}
+
+    @media (max-width: 480px) {
+        .logo { font-size: 24px; top: 18px; left: 16px; }
+    }
+
+    /* Zoom-out animation */
+    .page-zoom-out {
+        animation: zoomOut 0.8s cubic-bezier(.4,0,.2,1) forwards;
+    }
+
+    @keyframes zoomOut {
+        0% { transform: scale(2); }
+        100% { transform: scale(1); }
+    }
+
+    /* --- Vertical Stories Panel Styling --- */
+
+    .story-container-wrapper {
+        position: fixed;
+        /* Positioned below the logo and offset by the margin */
+        top: var(--logo-height); 
+        left: var(--container-margin);
+        
+        /* Fixed height, separated from the bottom edge */
+        height: calc(100vh - var(--logo-height) - (var(--container-margin) * 2)); 
+        width: 70px; /* Collapsed width */
+        
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: var(--container-border-radius); 
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        z-index: 8;
+        overflow: hidden; 
+
+        /* Simplified transition to only use width and box-shadow */
+        transition: width 0.3s ease, box-shadow 0.3s ease;
+        will-change: width, box-shadow; /* Optimization hint */
+    }
+
+    /* Expanded width on hover */
+    .story-container-wrapper:hover {
+        width: 200px; /* Expanded width (approx. 70 * 2.857) */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .story-list {
+        height: 100%;
+        overflow-y: scroll; /* Makes the list scrollable */
+        padding: 15px 10px; /* Internal padding for the scroll box effect */
+        box-sizing: border-box;
+        scrollbar-width: none; /* Firefox hide scrollbar */
+        /* Removed transform logic */
+    }
+    
+    /* Hide scrollbar for Chrome/Safari */
+    .story-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .story-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px; 
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--text-color);
+        transition: color 0.2s;
+    }
+
+    .story-item:hover {
+        color: var(--green);
+    }
+
+    /* UPDATED STORY ICON STYLES FOR THUMBNAILS */
+    .story-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 2px solid var(--saffron); 
+        background: rgba(255, 255, 255, 0.9);
+        margin-right: 10px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--saffron);
+        font-size: 1rem;
+        font-weight: 700;
+        /* NEW: Styles for thumbnail background */
+        background-size: cover;
+        background-position: center;
+    }
+
+    .story-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        opacity: 0; 
+        /* Simplified transform: */
+        transform: translateX(10px); 
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    /* Show story names when the container is hovered */
+    .story-container-wrapper:hover .story-name {
+        opacity: 1;
+        transform: translateX(0); /* Simplified transform */
+    }
+
+    /* --- Media Query for Desktop Minimization (Screen Width < 1100px) --- */
+    @media (max-width: 1100px) {
+    /* Hide the three right and left fixed panels */
+    .story-container-wrapper,
+    .right-nav-bar,
+    .user-profile-card {
+        display: none !important; 
+    }
+
+    /* Adjust the main content area to fill the whole screen horizontally */
+    .main-content {
+        left: var(--container-margin); /* Start from the left margin */
+        right: var(--container-margin); /* End at the right margin */
+    }
+
+    /* Optional: Center the top info header (City, AQI) */
+    .info-header {
+        position: relative; /* Change fixed to relative */
+        margin: 20px auto 0; /* Center horizontally below the logo */
+        width: fit-content;
+        max-width: 90%;
+        top: auto;
+        right: auto;
+    }
+    }
+
+        /* --- Updated Top Right Elegant Info Header Styling --- */
+        .info-header {
+            position: fixed;
+            top: 15px; /* Slightly lower to accommodate padding */
+            right: 15px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-color);
+            z-index: 10;
+            
+            /* Elegant Style */
+            background: var(--elegant-bg);
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .info-header:hover {
+             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .blog-link {
+            text-decoration: none;
+            color: var(--saffron);
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding-right: 15px; /* Separator padding */
+            border-right: 1px solid #ccc; /* Subtle vertical line separator */
+        }
+
+        .blog-link:hover {
+            color: var(--green);
+        }
+        
+        .city-name {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600; /* Bolder city name */
+            padding-right: 15px;
+            border-right: 1px solid #ccc; /* Subtle vertical line separator */
+        }
+
+        /* --- Updated Top Right Elegant Info Header Styling (Excerpt) --- */
+        /* ... (other styles) ... */
+
+        .toxicity-level {
+            /* Removed fixed padding/color; using classes for styling instead */
+            font-weight: 700;
+            padding: 4px 10px; /* Keep padding for the background box */
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* New classes for specific toxicity levels */
+        .toxicity-level.high {
+            background-color: #e74c3c; /* Red */
+            color: white;
+        }
+
+        .toxicity-level.medium {
+            background-color: #f39c12; /* Yellow/Orange */
+            color: #333;
+        }
+
+        .toxicity-level.low {
+            background-color: #2ecc71; /* Green */
+            color: white;
+        }
+        /* --- New User Profile Card Styling --- */
+        .user-profile-card {
+        position: fixed;
+    /* FIX: Increasing the top offset to ensure it clears the info-header */
+    /* Original header offset was 70px. Let's increase it to 90px for safe clearance. */
+        top: 100px; 
+        height: 75%;
+        right: var(--container-margin);
+        width: 280px; 
+        background: var(--elegant-bg);
+        border: 1px solid #eee;
+        border-radius: var(--container-border-radius);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        z-index: 9;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .profile-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid white; /* Ensures visibility if container has transparency */
+            flex-shrink: 0;
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 2px;
+        }
+
+        .profile-bio {
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        .profile-description {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #555;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .profile-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .profile-nav a {
+            text-decoration: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .profile-nav a:hover {
+            color: var(--saffron);
+        }
+
+        /* --- New Right-Side Vertical Navbar Styling --- */
+        .right-nav-bar {
+            position: fixed;
+            /* Position to the left of the Profile Card */
+            right: calc(var(--container-margin) + var(--profile-card-width) + 50px);
+            
+            top: 100px; /* Perfect safe gap below logo + info header */
+            height: 77%;
+            width: var(--nav-bar-width);
+            
+            background: var(--elegant-bg);
+            border: 1px solid #eee;
+            border-radius: var(--container-border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+            z-index: 9;
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 75px; /* Spacing between icons */
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: #aaa;
+            font-size: 1.6rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: block;
+        }
+
+        .nav-item a:hover {
+            color: var(--saffron);
+            transform: scale(1.05);
+        }
+
+        /* ================================================================ */
+        /* ===================   BLOG POST STYLING (NEW)   ================== */
+        /* ================================================================ */
+        .blog-post-content {
+            padding: 5px;
+        }
+        .blog-post-content h4 {
+            color: var(--saffron);
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .blog-post-content p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+            max-height: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+        }
+        .read-more-link {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--green);
+            cursor: pointer;
+        }
+        /* ================================================================ */
+        /* ===================   CENTER FEED CONTAINER   ================== */
+        /* ================================================================ */
+
+.main-feed-container {
+    position: fixed;
+    top: 103px;
+    left: 43%;
+    transform: translateX(-50%);
+    width: 680px;
+    height: calc(100vh - 160px);
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    padding: 20px;
+    overflow: hidden;
+}
+
+.feed-scroll-area {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-width: none;
+    will-change: scroll-position;
+}
+.feed-scroll-area::-webkit-scrollbar {
+    width: 0;
+}
+
+.feed-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 40px;
+    transform: translateZ(0);
+}
+
+/* Alternation logic */
+.left-post .post-box { order: 1; }
+.left-post .comment-box { order: 2; }
+
+.right-post .comment-box { order: 1; }
+.right-post .post-box { order: 2; }
+
+/* --- New Post Actions Styling --- */
+/* --- Facebook-Style Post Actions Styling --- */
+.post-actions {
+    display: flex;
+    justify-content: space-around; /* Distribute space evenly for buttons */
+    align-items: center;
+    margin-top: 10px;
+    padding: 5px 0;
+    border-top: 1px solid #ddd; /* Top separator */
+    border-bottom: 1px solid #ddd; /* Bottom separator (optional, remove if you prefer no bottom line) */
+    font-size: 0.95rem;
+    color: #606770; /* Facebook default gray text */
+}
+
+.action-btn {
+    flex-grow: 1; /* Make buttons take up equal width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+    padding: 8px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: inherit; /* Inherit the gray color */
+    transition: background-color 0.15s ease, color 0.15s ease;
+    border-radius: 6px;
+}
+
+.action-btn:hover {
+    background-color: #f2f2f2; /* Light hover background */
+}
+
+.action-btn:active {
+    background-color: #ebebeb; /* Darker active background */
+}
+
+/* Style for the icon part of the button */
+.action-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Style for the Liked state */
+.like-btn.liked {
+    color: var(--saffron); /* Use your app's saffron color for the active state */
+}
+
+.like-btn.liked .action-icon {
+    color: var(--saffron);
+}
+
+/* Post box */
+.post-box {
+    width: 55%;
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.post-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.post-user-pic {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, var(--saffron), var(--green));
+    border-radius: 50%;
+}
+.post-img, .post-video { /* Changed to affect both image and video */
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 10px;
+    /* Ensure media is clickable and fits the box */
+    cursor: pointer; 
+    display: block;
+    transform: translateZ(0);
+}
+/* Ensure the video inside the POPUP still has controls */
+#popupVideo {
+    pointer-events: auto !important; /* Override the feed style */
+}
+.post-hashtag {
+    font-size: 0.8rem;
+    color: var(--green);
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+
+/* Comments */
+.comment-box {
+    width: 45%;
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid #eee;
+    max-height: 350px;
+    overflow-y: auto;
+}
+.comment-box::-webkit-scrollbar {
+    width: 5px; /* width of the scrollbar */
+}
+.comment-box::-webkit-scrollbar-thumb {
+    background: #ccc; /* color of the scroll thumb */
+    border-radius: 10px; /* round the corner */
+}
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 6px; 
+    /* Ensures the username + pic stays together */
+    flex-shrink: 0; 
+}
+.comment-user-pic {
+    width: 20px; 
+    height: 20px;
+    border-radius: 50%;
+    /* Default placeholder color - will be overridden by JS for random colors */
+    background: #ccc; 
+    flex-shrink: 0;
+    margin-right: 8px; /* Space between pic and text */
+    margin-top: 2px; /* Small vertical adjustment */
+}
+.comment-content-wrapper {
+    /* Contains username and comment text, allows wrapping */
+    flex-grow: 1; 
+    font-size: 0.9rem;
+    line-height: 1.3;
+    word-break: break-word; 
+    min-width: 0;
+}
+.comment-username {
+    font-size: 0.85rem; /* Smaller username font */
+    font-weight: 500; /* Clean, non-bold look */
+    color: #333;
+    margin-right: 4px; /* Small space before the comment text */
+    display: block;
+    margin-bottom: 2px;
+}
+.comment-text {
+    font-size: 0.9rem; 
+    color: #555;
+    display:block;
+    /*word-break: break-word; /* Prevents text overflow */
+}
+.comment-time {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.post-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+/* MAIN BOX */
+.popup-container {
+    background: white;
+    width: 75%;
+    height: 80vh;
+    border-radius: 12px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+/* LEFT = IMAGE */
+.popup-left {
+    width: 60%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+.popup-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* RIGHT = COMMENTS */
+.popup-right {
+    width: 40%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.popup-details {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.popup-comments {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.popup-add-comment {
+    display: flex;
+    padding: 8px;
+    border-top: 1px solid #ddd;
+}
+
+#popupCommentInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 8px;
+    font-size: 14px;
+    background: none;
+}
+
+#popupCommentBtn {
+    background: var(--green);
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    margin-left: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.popup-hashtag {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.popup-comments::-webkit-scrollbar {
+    width: 6px;
+}
+.popup-comments::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+/* --- MUTE BUTTON STYLING --- */
+.mute-button {
+    position: absolute;
+    bottom: 20px; /* Distance from the bottom of the video */
+    right: 20px; /* Distance from the right of the video */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    color: white;
+    padding: 8px 10px;
+    border-radius: 50%; /* Makes it circular */
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it is above the video */
+    line-height: 1; /* Fix vertical alignment for the emoji */
+    transition: background 0.2s;
+    display: none; /* Hidden by default until a video is opened */
+}
+
+.mute-button:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Arrows */
+.popup-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.popup-nav.left { left: 0.1%; }
+.popup-nav.right { right: 0.1%; }
+
+
+.add-comment {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    padding: 4px 0;
+}
+
+.comment-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background: none;
+    padding: 6px 4px;
+}
+
+.comment-btn {
+    border: none;
+    background: none;
+    color: var(--green);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+}
+.delete-comment {
+    margin-left: 10px;
+    color: red;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.user-comment:hover .delete-comment {
+    opacity: 1;  /* Delete shows on hover */
+}
+
+/* --- New Sliding Menu Structure and Animation --- */
+.settings-content {
+    /* New wrapper for controlling the screen overflow */
+    overflow: hidden; 
+}
+
+/* Header updates for back button */
+.settings-header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 10px 14px; /* Add padding for visual spacing */
+}
+
+/* Back button style */
+.back-btn {
+    position: absolute;
+    left: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-color);
+    line-height: 1;
+    padding: 0;
+    opacity: 0; /* Hidden by default */
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.settings-header.details-active .back-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* The container that controls the sliding of the screens */
+.settings-container-inner { /* *** CLASS NAME CHANGE IS HERE *** */
+    width: 200%; /* Contains two screens (main and details) */
+    display: flex;
+    transition: transform 0.3s ease-in-out; /* The sliding animation */
+}
+
+/* Styles for both screen types */
+.settings-screen {
+    width: 50%; /* Each screen takes up half the 200% width */
+    flex-shrink: 0;
+    padding: 0 14px 14px 14px;
+    box-sizing: border-box;
+}
+
+/* State when the details screen is active */
+.settings-container-inner.details-active { /* *** CLASS NAME CHANGE IS HERE *** */
+    transform: translateX(-50%); /* Slides the container to show the second screen */
+}
+
+/* Update general list item to include arrow for main menu */
+.settings-item.has-submenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.settings-item-arrow {
+    font-size: 1.2rem;
+    color: #999;
+}
+
+/* Ensure the main settings title is centered when no back button is visible */
+#settingsTitle {
+    flex-grow: 1;
+    text-align: center;
+}
+.settings-header .close-settings {
+    position: relative; /* Make sure it stays on the right */
+}
+
+/* SETTINGS POPUP BACKDROP */
+.settings-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(6px);
+    z-index: 999999;
+}
+
+/* POPUP BOX */
+.settings-container {
+    width: 480px;
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    overflow-y: hidden;
+    position: relative;
+}
+
+/* TITLE BAR */
+.settings-header {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.settings-header h2 {
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.close-settings {
+    font-size: 2.2rem;
+    cursor: pointer;
+    color: #444;
+}
+
+/* SETTINGS ITEMS */
+.settings-list {
+    max-height: calc(80vh - 70px); /* remaining height after header */
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.settings-item {
+    padding: 14px;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s;
+    margin-bottom: 12px;
+}
+
+.settings-item:hover {
+    transform: translateX(5px);
+}
+
+/* Logout red */
+.logout {
+    background: #ffecec;
+    border-color: #ffc6c6;
+    color: #d22;
+}
+.logout:hover {
+    background: #d22;
+    color: white;
+}
+
+/* LOGOUT POPUP BACKDROP */
+.logout-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(6px);
+    z-index: 1000000; /* higher than settings */
+}
+
+/* LOGOUT BOX */
+.logout-box {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.2);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+}
+
+/* BUTTONS */
+.logout-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cancel-btn {
+    background: #e4e4e4;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.cancel-btn:hover {
+    background: #c9c9c9;
+}
+
+.logout-btn {
+    background: #d22;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.logout-btn:hover {
+    background: #ff2a2a;
+}
+
+</style>
+</head>
+
+<body>
+    <div class="logo">
+        <span class="saffron">SHAKTI</span><span class="green">-IND</span>
+    </div>
+
+    <div class="top-search-bar">
+    <input type="text" id="searchInput" placeholder="Search users by ID..." />
+    <div id="searchResults" class="search-results"></div>
+    </div>
+
+   <div class="info-header">
+        
+        <a href="#user-blog" class="blog-link">
+            My Highlighted Blog
+        </a>
+
+        <div class="toxicity-level low">
+            NORMAL AQI
+        </div>
+
+        <div class="city-name">
+            Place: SRIKALAHASTHI
+        </div>
+        
+    </div>
+
+    <div class="user-profile-card">
+    <div class="profile-header">
+
+        <!-- ⭐ Profile Picture from Firebase -->
+        <img id="profilePic" class="profile-photo" src="" alt="profile">
+
+        <div>
+            <!-- ⭐ Username from Firebase -->
+            <div class="profile-name" id="profileName">
+                Loading...
+            </div>
+
+            <!-- ⭐ Bio from Firebase -->
+            <div class="profile-bio" id="profileBio">
+                Loading...
+            </div>
+        </div>
+    </div>
+
+    <!-- ⭐ Description from Firebase -->
+    <div class="profile-description" id="profileDesc">
+        Loading...
+    </div>
+
+
+        <div class="profile-nav">
+            <a href="#pictures" title="Pictures">P</a>
+            <a href="#blogs" title="Blogs">B</a>
+            <a href="#videos" title="Videos">V</a>
+            <a href="#saved" title="Saved">S</a>
+        </div>
+    </div>
+
+    <div class="right-nav-bar">
+        <div class="nav-item">
+            <a href="HP2.html" title="Home">🏠</a>
+        </div>
+        <div class="nav-item">
+            <a href="safetypage.html" title="Safety">🚨</a>
+        </div>
+        <div class="nav-item">
+            <a href="community.html" title="Community">👥</a>
+        </div>
+        <div class="nav-item">
+            <a href="./profile_page.html" title="Profile">👤</a>
+        </div>
+        <div class="nav-item">
+            <a href="./chat.html" title="Chat">💬</a>
+        </div>
+        <div class="nav-item">
+            <a href="#" onclick="openSettings()" title="Settings">⚙️</a>
+        </div>
+    </div>
+
+    <div class="main-feed-container">
+    <div class="feed-scroll-area" id="feed"></div>
+    </div>
+
+<div id="postPopup" class="post-popup">
+    <div class="popup-container">
+
+        <div class="popup-left">
+            <img id="popupImage" class="popup-image" style="display: none;">
+            <video id="popupVideo" class="popup-image" muted loop style="display: none;"></video>
+            <span id="muteButton" class="mute-button">
+                🔊 
+            </span>
+        </div>
+
+        <div class="popup-right">
+            <div class="popup-details">
+                <div class="popup-hashtag" id="popupCaption"></div>
+                <div class="popup-comments" id="popupComments"></div>
+                <div class="popup-add-comment">
+                    <input type="text" id="popupCommentInput" placeholder="Add a comment...">
+                    <button id="popupCommentBtn">Post</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="close-btn" onclick="closePopup()">×</div>
+
+    </div>
+    <div class="popup-nav left" onclick="prevPost()">❮</div>
+    <div class="popup-nav right" onclick="nextPost()">❯</div>
+</div>
+
+    <div class="story-container-wrapper">
+        <div class="story-list" id="storyList"></div>
+    </div>
+
+    <!-- SETTINGS POPUP -->
+<div id="settingsPopup" class="settings-popup">
+    <div class="settings-container">
+
+        <div class="settings-content">
+
+    <div class="settings-header">
+        <button id="backButton" class="back-btn" onclick="goBack()">&#10094;</button>
+        <span id="settingsTitle">Settings</span>
+        <span class="close-settings" onclick="closeSettings()">×</span>
+    </div>
+
+    <div id="settingsContainer" class="settings-container-inner">
+
+        <div id="mainMenu" class="settings-screen">
+            <div id="mainSettingsList" class="settings-list">
+                
+                <div class="settings-item has-submenu" onclick="showSubCategory('Individual Security Control')">
+                    Individual Security Control <span class="settings-item-arrow">▶</span>
+                </div>
+                <div class="settings-item has-submenu" onclick="showSubCategory('General Settings')">
+                    General Settings <span class="settings-item-arrow">▶</span>
+                </div>
+                <div class="settings-item has-submenu" onclick="showSubCategory('Privacy')">
+                    Privacy <span class="settings-item-arrow">▶</span>
+                </div>
+
+                <div class="settings-item">Security</div>
+                <div class="settings-item">Parenting</div>
+                <div class="settings-item">Dashboard</div>
+                <div class="settings-item">User Data Visualization</div>
+                <div class="settings-item">HSS (Human Safety Score)</div>
+                <div class="settings-item">Contact</div>
+                <div class="settings-item">Activity</div>
+                <div class="settings-item">Profile Protection</div>
+                <div class="settings-item">Management</div>
+                <div class="settings-item logout" onclick="showLogout()">SHAKTI-IND Logout</div>
+            </div>
+        </div>
+
+        <div id="detailsScreen" class="settings-screen">
+            </div>
+    </div>
+</div>
+
+    </div>
+</div>
+<!-- LOGOUT CONFIRM POPUP -->
+<div id="logoutConfirm" class="logout-popup">
+    <div class="logout-box">
+        <p>Are you sure you want to logout from SHAKTI-IND?</p>
+
+        <div class="logout-buttons">
+            <button class="cancel-btn" onclick="closeLogout()">Cancel</button>
+            <button class="logout-btn" onclick="confirmLogout()">Logout</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const navItems = document.querySelectorAll(".right-nav-bar .nav-item");
+
+navItems.forEach(item => {
+    item.addEventListener("click", () => {
+
+        // remove active from all
+        navItems.forEach(i => i.classList.remove("active"));
+
+        // add active to clicked one
+        item.classList.add("active");
+    });
+});
+</script>
+<script>
+    const username = localStorage.getItem("user_session");
+
+if (!username) {
+    // User not logged in
+    window.location.href = "login_page.html";
+} else {
+    document.getElementById("profileName").innerText = username;
+}
+</script>
+
+<script>
+    function rearrangePosts() {
+    const visibleRows = [...document.querySelectorAll(".feed-row")]
+        .filter(row => row.style.display !== "none");
+
+    visibleRows.forEach((row, index) => {
+        row.classList.remove("left-post", "right-post");
+
+        if (index % 2 === 0) {
+            row.classList.add("left-post");
+        } else {
+            row.classList.add("right-post");
+        }
+    });
+}
+</script>
+
+<script>
+    let currentPostIndex = 0;
+    
+    // Helper function to get visible posts (Post boxes are the targets)
+    function getVisiblePosts() {
+        return [...document.querySelectorAll(".feed-row")]
+            .filter(row => row.style.display !== "none")
+            .map(row => row.querySelector(".post-box"));
+    }
+    
+    // Function to update click handlers on feed images/videos
+    function updateVisiblePostClickEvents() {
+        let visiblePosts = getVisiblePosts();
+
+        visiblePosts.forEach((post, i) => {
+            // Target both img and video. If they don't exist (i.e., it's a blog post), click handler is skipped.
+            const media = post.querySelector(".post-img, .post-video");
+            
+            if (media) {
+                // Attach the click event using the element's property
+                media.onclick = () => openPost(i);
+            }
+        });
+    }
+
+    let activePostRow = null;
+
+    // CORRECTED: Added popupVideo.play()
+    function openPost(index) {
+        let visiblePosts = getVisiblePosts();
+
+        // 1. Get the current row and post data
+        activePostRow = visiblePosts[index].parentElement;
+        const post = visiblePosts[index];
+
+        // Ensure the post is media and not a blog post
+        if (!post.querySelector(".post-img") && !post.querySelector(".post-video")) {
+            return; // Exit if it's a blog post (no image/video to open)
+        }
+        
+        // 2. Identify media elements in the popup
+        const popupImage = document.getElementById("popupImage");
+        const popupVideo = document.getElementById("popupVideo");
+        const muteButton = document.getElementById("muteButton");
+        
+        // 3. Get the media source and type from the post-box
+        const mediaElement = post.querySelector(".post-img, .post-video");
+        const isVideo = mediaElement.classList.contains("post-video");
+
+        // 4. Set media source and visibility
+        if (isVideo) {
+            popupVideo.src = mediaElement.src;
+            popupVideo.style.display = "block";
+            popupImage.style.display = "none";
+
+            popupVideo.load(); 
+            popupVideo.play(); 
+
+            // MUTE BUTTON LOGIC FOR VIDEO:
+            muteButton.style.display = "block";
+            muteButton.innerHTML = popupVideo.muted ? '🔇' : '🔊'; // Set initial icon
+        } else {
+            popupImage.src = mediaElement.src;
+            popupImage.style.display = "block";
+            popupVideo.style.display = "none";
+            popupVideo.pause(); // Pause any running popup video
+
+            // MUTE BUTTON LOGIC FOR IMAGE:
+            muteButton.style.display = "none";
+        }
+
+        // 5. set hashtag
+        document.getElementById("popupCaption").innerText =
+            post.querySelector(".post-hashtag").innerText;
+
+        // 6. load ALL comments into popup
+        const commentsHTML = activePostRow.querySelector(".comment-box").innerHTML;
+        document.getElementById("popupComments").innerHTML = commentsHTML;
+        
+        // Force all comments in the popup to be visible
+        document.querySelectorAll("#popupComments .comment").forEach(c => {
+            c.style.removeProperty('display'); 
+        });
+        
+        activateDeleteComment(); 
+
+        // 7. Show the popup
+        document.getElementById("postPopup").style.display = "flex";
+        currentPostIndex = index; // Set index for nav
+    }
+
+    // --- Comment/Utility Functions (Unchanged) ---
+    
+    document.getElementById("popupCommentBtn").addEventListener("click", () => {
+    const input = document.getElementById("popupCommentInput");
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Retrieve the active username from the profile card
+    const currentUsername = document.getElementById("profileName").innerText;
+    const currentUserPic = document.getElementById("profilePic").src;
+    
+    const newCommentHTML = `
+        <div class="comment user-comment">
+            <img class="comment-user-pic" src="${currentUserPic}" alt="user">
+            <div class="comment-content-wrapper">
+                <span class="comment-username">${currentUsername}</span>
+                <span class="comment-text">${text}</span>
+            </div>
+            <span class="delete-comment">Delete</span>
+        </div>
+    `;
+
+    // FIX 1: Insert new comment at the top of the popup comments list
+    document.getElementById("popupComments").insertAdjacentHTML('afterbegin', newCommentHTML);
+
+    // FIX 2: Insert new comment at the top of the feed comment box
+    activePostRow.querySelector(".comment-box").insertAdjacentHTML('afterbegin', newCommentHTML);
+
+    input.value = "";
+
+    activateDeleteComment(); 
+});
+
+    function limitFeedComments() {
+        document.querySelectorAll(".comment-box").forEach(box => {
+            const comments = box.querySelectorAll(".comment");
+            
+            // If more than 5 comments, hide the rest
+            comments.forEach((c, i) => {
+                if (i >= 5) {
+                    c.style.display = "none";
+                }
+            });
+        });
+    }
+
+    function activateDeleteComment() {
+        // DELETE from POPUP and FEED
+        document.querySelectorAll(".delete-comment").forEach(btn => {
+            btn.onclick = () => {
+                const commentDiv = btn.parentElement;
+                const textToRemove = commentDiv.innerHTML;
+
+                // Remove from popup
+                commentDiv.remove();
+
+                // Remove from feed also
+                document.querySelectorAll(".comment-box .comment").forEach(realComment => {
+                    if (realComment.innerHTML === textToRemove) {
+                        realComment.remove();
+                    }
+                });
+            };
+        });
+    }
+
+    function closePopup() {
+        document.getElementById("postPopup").style.display = "none";
+        // Stop the video when closing the popup
+        document.getElementById("popupVideo").pause(); 
+    }
+
+    function nextPost() {
+        let visiblePosts = getVisiblePosts();
+        currentPostIndex = (currentPostIndex + 1) % visiblePosts.length;
+        openPost(currentPostIndex);
+    }
+
+    function prevPost() {
+        let visiblePosts = getVisiblePosts();
+        currentPostIndex = (currentPostIndex - 1 + visiblePosts.length) % visiblePosts.length;
+        openPost(currentPostIndex);
+    }
+</script>
+
+<script>
+// Function to handle the mute/unmute logic
+document.getElementById('muteButton').addEventListener('click', function() {
+    const video = document.getElementById('popupVideo');
+    if (video.muted) {
+        video.muted = false;
+        this.innerHTML = '🔊'; // Unmuted Icon
+    } else {
+        video.muted = true;
+        this.innerHTML = '🔇'; // Muted Icon
+    }
+});
+</script>
+
+<script>
+// NEW BLOG DATA - This is where you would "upload" your blog posts
+const blogData = [
+    { 
+        title: "The Power of Local Community Initiatives", 
+        author: "ShaktiSafety_Mod", 
+        excerpt: "Our recent drive in Srikalahasti saw immense participation. We discussed five key ways to improve neighborhood watch programs. From digital reporting tools to evening patrols, community involvement is the backbone of a secure environment. Let's keep the momentum going and expand this model across Andhra Pradesh...",
+        category: "shaktisafety",
+        time: "5 days ago"
+    },
+    { 
+        title: "Investing in the Future: Tech Startups in Tier 2 Cities", 
+        author: "EconomyExpert_AP", 
+        excerpt: "The economic landscape is shifting away from metros. Cities like Vizag and Vijayawada are becoming hubs for innovation. This post breaks down the top three sectors—FinTech, AgriTech, and E-commerce—that are receiving major funding and highlights how young entrepreneurs can tap into these opportunities...",
+        category: "economy",
+        time: "1 day ago"
+    },
+    { 
+        title: "Ayurvedic Secrets for Daily Wellness", 
+        author: "HealthGuru_Pooja", 
+        excerpt: "Simple changes in your diet can have profound effects. We explore three ancient Ayurvedic practices you can incorporate into your morning routine: oil pulling, drinking warm water with turmeric, and a five-minute breathing exercise. These habits, rooted in Indian tradition, boost immunity and mental clarity...",
+        category: "health",
+        time: "2 weeks ago"
+    },
+    { 
+        title: "Understanding Cyber Law in India", 
+        author: "LegalMind_Rao", 
+        excerpt: "The Information Technology Act of 2000 is constantly evolving. This quick guide simplifies the laws regarding data privacy and online harassment. Know your rights and the correct procedure for filing a cybercrime complaint. Protect yourself in the digital age.",
+        category: "legal",
+        time: "3 days ago"
+    },
+    { 
+        title: "The Revival of Traditional Handloom Textiles", 
+        author: "CultureVibe_12", 
+        excerpt: "From Ikat to Kanjivaram, Indian handlooms are a treasure trove of culture and history. We feature a small village near Tirupati that is struggling to keep this craft alive. Discover how you can support local artisans and preserve this beautiful heritage.",
+        category: "culture",
+        time: "1 week ago"
+    }
+];
+
+// NEW: Global map for storing the randomly selected image path for each category
+const categoryThumbnails = {}; 
+
+// ALL CATEGORY FOLDER NAMES (match your folders)
+const categories = [
+    "culture", "economy", "educational", "entertainment",
+    "ethical", "health", "legal", "localnews",
+    "news", "shaktisafety", "society", "sports",
+    "students", "technology"
+];
+
+// Robust loader: tries different relative prefixes and common extensions
+async function loadImagesFromFolder(category) {
+    const prefixes = ["pics", "../pics", "./pics"];
+    const mediaExts = [
+        //{ ext: "jpg", type: "image" }, 
+        //{ ext: "png", type: "image" }, 
+        //{ ext: "webp", type: "image" },
+        { ext: "jpeg", type: "image" }, 
+        //{ ext: "avif", type: "image" },
+        { ext: "mp4", type: "video" },    
+        //{ ext: "webm", type: "video" }    
+    ];
+    let mediaItems = [];
+    let allImagePaths = []; // NEW: List to store ALL image paths for random selection
+
+    for (let p = 0; p < prefixes.length; p++) {
+        let prefix = prefixes[p];
+        mediaItems = [];
+        let index = 1;
+        while (true) {
+            let foundThisIndex = false;
+
+            for (let { ext, type } of mediaExts) {
+                const path = `${prefix}/${category}/${index}.${ext}`;
+                try {
+                    const res = await fetch(path, { method: "HEAD" });
+                    if (res && res.ok) {
+                        mediaItems.push({ path, type }); 
+                        foundThisIndex = true;
+                        
+                        // CRITICAL CHANGE: Collect all image paths for later random selection
+                        if (type === 'image') {
+                           allImagePaths.push(path);
+                        }
+                        
+                        break; 
+                    }
+                } catch (e) {
+                    // ignore network errors for this attempt
+                }
+            }
+
+            if (!foundThisIndex) break; 
+            index++;
+            if (index > 500) break;
+        }
+
+        // Optimization: If media items are found under this prefix, stop searching prefixes
+        if (mediaItems.length > 0) break; 
+    }
+    
+    // NEW LOGIC: Randomly select one image path for the thumbnail
+    if (allImagePaths.length > 0) {
+        const randomIndex = Math.floor(Math.random() * allImagePaths.length);
+        categoryThumbnails[category] = allImagePaths[randomIndex]; // Store the random path
+    } else {
+        categoryThumbnails[category] = null; // Store null if no image found
+    }
+
+    return mediaItems; // Return all media for the feed
+}
+
+
+// Auto-generate comments (function is unchanged)
+function generateComments(count) {
+    const names = [
+        "Rahul_01", "Sneha_06", "Meera_10", "Kiran__02", "Arjun_66", "Nisha_55", 
+        "Vijay_2006", "Somu_18", "Aisha_30", "Rohit_45", "Pooja_008", "Kavya__66",
+        "Manoj_99", "Harsha_33", "Yash_93", "Shivani_25"
+    ];
+
+    const commentTexts = [
+        "Wowww 😍🔥", "Beautiful picture!", "Loved this ❤️", "This is amazing 🔥",
+        "Keep it up bro!", "Superb da ✨", "Epic shot 😎📸", "Feeling motivated!",
+        "This made my day 😌", "Nice click 👏", "Omg where is this place? 🤩",
+        "Love the vibe 💙", "Too good anna 🔥", "Respect 💯", "Hahaha awesome 😂",
+        "Clean edit bro!", "You're improving daily 🔥", "Great capture 😍",
+        "Legend move 💫", "Lovely moment ❤️"
+    ];
+
+    let list = [];
+
+    for (let i = 0; i < count; i++) {
+        let randomUser = names[Math.floor(Math.random() * names.length)];
+        let randomComment = commentTexts[Math.floor(Math.random() * commentTexts.length)];
+        const randomColor = `hsl(${Math.random() * 360}, 70%, 70%)`;
+
+        list.push(`
+            <div class="comment">
+                <div class="comment-user-pic" style="background-color: ${randomColor};"></div>
+                <div class="comment-content-wrapper">
+                    <span class="comment-username">${randomUser}</span>
+                    <span class="comment-text">${randomComment}</span>
+                </div>
+            </div>
+        `);
+    }
+
+    return list.join("");
+}
+
+
+// MODIFIED: Generate posts for home OR category (Now includes blogs)
+async function generateFeed(filterCategory = null) {
+    const feed = document.getElementById("feed");
+    
+    // Only clear the feed if it's a new filter being applied
+    if (filterCategory) {
+        feed.innerHTML = ""; 
+    } else if (feed.children.length > 0) {
+        return; 
+    }
+
+    let allPosts = [];
+    const categoriesToLoad = filterCategory ? [filterCategory] : categories;
+    
+    // 1. Gather Media Posts (Existing Logic)
+    for (let cat of categoriesToLoad) {
+        // Run this to populate categoryThumbnails even if we aren't displaying media right now
+        let mediaItems = await loadImagesFromFolder(cat); 
+
+        mediaItems.forEach((item) => {
+            allPosts.push({
+                type: 'media',
+                category: cat,
+                mediaPath: item.path,
+                mediaType: item.type,
+                hashtag: "#" + cat,
+                time: `${Math.floor(Math.random() * 24) + 1} hr ago` // Random time for media posts
+            });
+        });
+    }
+
+    // 2. Gather Blog Posts (New Logic)
+    blogData.forEach(blog => {
+        if (!filterCategory || blog.category === filterCategory) {
+             allPosts.push({
+                type: 'blog',
+                ...blog
+            });
+        }
+    });
+    
+    // 3. Shuffle all posts (media and blogs) for random display
+    allPosts.sort(() => Math.random() - 0.5);
+
+    // 4. Build HTML and Append to Feed
+    feed.innerHTML = ''; 
+    allPosts.forEach((post, i) => {
+        let rowHTML;
+        const isLeft = (i % 2 === 0);
+        const alignmentClass = isLeft ? "left-post" : "right-post";
+        
+        if (post.type === 'media') {
+            // Logic for Media Post
+            let mediaHTML;
+            if (post.mediaType === "video") {
+                mediaHTML = `
+                    <video src="${post.mediaPath}" 
+                           class="post-video" 
+                           muted loop  
+                           playsinline
+                           loading="lazy"
+                           onmouseover="this.play()" 
+                           onmouseout="this.pause()"> 
+                    </video>`;
+            } else {
+                mediaHTML = `<img src="${post.mediaPath}" class="post-img" loading="lazy">`;
+            }
+
+            rowHTML = `
+                <div class="feed-row ${alignmentClass}" data-category="${post.category}" data-index="${i}">
+                    <div class="post-box">
+                        <div class="post-header">
+                            <div class="post-user-pic"></div>
+                            <div>
+                                <div class="post-username">${post.category.toUpperCase()} USER</div>
+                                <div class="post-time">${post.time}</div>
+                            </div>
+                        </div>
+                        ${mediaHTML}
+                        <div class="post-actions">
+                            <button class="action-btn like-btn" onclick="toggleLike(this)">
+                                <span class="action-icon">👍</span> Like</button>
+                            <button class="action-btn share-btn" onclick="sharePost(this)">
+                                <span class="action-icon">📤</span> Share</button>
+                        </div>
+                        <div class="post-hashtag">#${post.category}</div>
+                    </div>
+
+                    <div class="comment-box">
+                        ${generateComments(10)}
+                    </div>
+                </div>
+            `;
+            
+        } else if (post.type === 'blog') {
+             // Logic for Blog Post
+             rowHTML = `
+                <div class="feed-row ${alignmentClass}" data-category="${post.category}" data-index="${i}">
+                    <div class="post-box">
+                        <div class="post-header">
+                            <div class="post-user-pic" style="background: linear-gradient(45deg, #138808, #FF9933);"></div>
+                            <div>
+                                <div class="post-username">${post.author}</div>
+                                <div class="post-time">${post.time}</div>
+                            </div>
+                        </div>
+                        <div class="blog-post-content">
+                            <h4>${post.title}</h4>
+                            <p>${post.excerpt}</p>
+                            <span class="read-more-link">Read full blog...</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn like-btn" onclick="toggleLike(this)">
+                                <span class="action-icon">👍</span> Like</button>
+                            <button class="action-btn share-btn" onclick="sharePost(this)">
+                                <span class="action-icon">📤</span> Share</button>
+                         </div>
+                        <div class="post-hashtag">#${post.category} #Blog</div>
+                    </div>
+
+                    <div class="comment-box">
+                        ${generateComments(7)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        feed.insertAdjacentHTML('beforeend', rowHTML);
+    });
+
+    // 5. Final setup calls
+    rearrangePosts(); 
+    updateVisiblePostClickEvents(); 
+    activateCommentSystem();
+}
+
+// Array of story names (Moved here from the deleted script block)
+const storyNames = [
+    "Entertainment", "Society", "News", "Localnews",
+    "Legal", "Students", "Educational", "Ethical", "Shakti Safety",
+    "Culture", "Health", "Economy", "Technology", "Sports"
+];
+
+// NEW: Function to initialize the stories (icons) and load the feed
+async function initializeStories() {
+    const storyList = document.getElementById('storyList');
+    // Clear existing stories just in case
+    storyList.innerHTML = ""; 
+
+    // 1. Pre-load: Run generateFeed() to populate categoryThumbnails and build the main feed
+    await generateFeed(null); 
+    
+    // 2. Build Story HTML using the stored paths
+    storyNames.forEach(name => {
+        const categoryKey = name.toLowerCase().replace(/\s/g, '');
+        const initial = name.charAt(0);
+        const thumbPath = categoryThumbnails[categoryKey]; 
+
+        const storyItem = document.createElement('a');
+        const hrefKey = name.toLowerCase().replace(/\s/g, ''); 
+        storyItem.href = `#${hrefKey}`; 
+        storyItem.classList.add('story-item');
+        storyItem.title = name; 
+        
+        // Set the content for fallback (initials)
+        const iconContent = thumbPath ? '' : initial;
+
+        storyItem.innerHTML = `
+            <div class="story-icon">${iconContent}</div>
+            <div class="story-name">${name}</div>
+        `;
+        
+        // CRITICAL JAVASCRIPT: Manually set background image style if a path exists
+        const storyIcon = storyItem.querySelector('.story-icon');
+        if (thumbPath) {
+            storyIcon.style.backgroundImage = `url('${thumbPath}')`;
+            storyIcon.style.color = 'transparent'; // Hide initials
+            storyIcon.style.border = '2px solid var(--green)'; // Change border color for image
+            storyIcon.style.backgroundSize = 'cover'; // Ensure CSS is present (redundant if you kept my previous CSS, but safe to include in thought)
+            storyIcon.style.backgroundPosition = 'center'; // Ensure CSS is present
+        } else {
+             storyIcon.style.border = '2px solid var(--saffron)'; // Fallback to saffron border
+        }
+        
+        storyList.appendChild(storyItem);
+    });
+    
+    // 3. Re-attach story click handlers
+    document.querySelectorAll(".story-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const cat = item.title.toLowerCase().replace(/\s/g, "");
+            generateFeed(cat).then(() => {
+                limitFeedComments();
+            });
+        });
+    });
+    
+}
+
+// New Action Button Functions
+function toggleLike(button) {
+    button.classList.toggle('liked');
+    // Optional: Add logic here to send the like/unlike action to your server/database.
+}
+
+function sharePost(button) {
+    // Placeholder for sharing functionality.
+    alert('Share functionality coming soon!');
+    // Optional: Add logic here to use navigator.share or copy a link to the clipboard.
+}
+
+// Final function to handle comments
+function activateCommentSystem() {
+    document.querySelectorAll(".feed-row").forEach((row) => {
+
+        const input = row.querySelector(".comment-input");
+        const btn = row.querySelector(".comment-btn");
+        const commentBox = row.querySelector(".comment-box");
+
+        if (!input || !btn || !commentBox) return;
+
+        btn.onclick = () => {
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Retrieve the active username from the profile card, which is reliable
+            const currentUsername = document.getElementById("profileName").innerText;
+
+            const newCommentHTML = `
+                <div class="comment user-comment">
+                    <div class="comment-user-pic" style="background: linear-gradient(45deg, var(--saffron), var(--green));"></div>
+                    <div class="comment-content-wrapper">
+                        <span class="comment-username">${currentUsername}</span>
+                        <span class="comment-text">${text}</span>
+                    </div>
+                    <span class="delete-comment">Delete</span>
+                </div>
+            `;
+
+            // FIX 3: Insert new comment at the top of the feed comment box
+            commentBox.insertAdjacentHTML('afterbegin', newCommentHTML);
+            input.value = "";
+
+            activateDeleteComment();
+        };
+    });
+}
+
+// --- SCROLL OPTIMIZATION LOGIC (Anti-Lag System) ---
+let scrollTimeout;
+const scrollArea = document.getElementById('feed'); // Ensure this ID matches the scrolling div
+
+function handleScrollPerformance() {
+    // 1. Select only currently visible video elements for efficiency
+    const videoElements = document.querySelectorAll('#feed .post-video');
+
+    // PAUSE all currently playing videos
+    videoElements.forEach(video => {
+        // Check if video is playing AND in viewport
+        const rect = video.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (!video.paused && isVisible) {
+            video.dataset.wasPlaying = 'true'; // Mark it for resumption
+            video.pause();
+        }
+    });
+
+    // Reset the "stop scrolling" timer
+    clearTimeout(scrollTimeout);
+
+    // RESUME videos 200ms after scrolling stops
+    scrollTimeout = setTimeout(() => {
+        videoElements.forEach(video => {
+            if (video.dataset.wasPlaying === 'true') {
+                 video.dataset.wasPlaying = 'false';
+                 // The onmouseover/onmouseout attributes will handle the actual restart
+            }
+        });
+    }, 200); 
+}
+
+// 3. Attach the handler to the correct scrolling element
+// The scrolling element is the inner div: <div class="feed-scroll-area" id="feed">
+if (scrollArea) {
+    scrollArea.addEventListener('scroll', handleScrollPerformance);
+}
+// --- END SCROLL OPTIMIZATION LOGIC ---
+
+// FINAL STARTUP SEQUENCE: Use window.onload to run the async initialization and the transition logic
+window.onload = () => {
+    // Start the whole page initialization sequence
+    initializeStories().then(() => {
+        const body = document.body;
+        
+        // 1. Check if the 'skipTransition' flag is set in Session Storage
+        if (sessionStorage.getItem('skipTransition')) {
+            // Flag is set: Skip the transition.
+            body.style.opacity = "1";
+            body.style.transform = "scale(1)";
+            body.style.transition = "none"; 
+            
+        } else {
+            // Flag is NOT set: Run the animation
+            requestAnimationFrame(() => {
+                body.style.opacity = "1";
+                body.classList.add("page-zoom-out");
+                
+                // 2. Set the flag so the next refresh skips the animation
+                sessionStorage.setItem('skipTransition', 'true');
+            });
+        }
+        
+        // ALSO: Ensure comments are limited once feed is built
+        limitFeedComments();
+    });
+};
+</script>
+
+<script>
+function openSettings() {
+    document.getElementById("settingsPopup").style.display = "flex";
+}
+
+function closeSettings() {
+    document.getElementById("settingsPopup").style.display = "none";
+}
+
+// Close popup when clicking outside
+window.addEventListener("click", function(e) {
+    if (e.target.id === "settingsPopup") {
+        closeSettings();
+    }
+});
+</script>
+
+<script>
+function showLogout() {
+    document.getElementById("logoutConfirm").style.display = "flex";
+}
+
+function closeLogout() {
+    document.getElementById("logoutConfirm").style.display = "none";
+}
+
+function confirmLogout() {
+    // redirect to login page
+    window.location.href = "../login_page.html";  // CHANGE filename if needed
+}
+
+// close on background click
+window.addEventListener("click", function(e) {
+    if (e.target.id === "logoutConfirm") {
+        closeLogout();
+    }
+});
+
+// Variable update: Target the new ID
+const settingsContainer = document.getElementById('settingsContainer'); 
+const settingsTitle = document.getElementById('settingsTitle');
+const detailsScreen = document.getElementById('detailsScreen');
+const settingsHeader = document.querySelector('.settings-header');
+
+// 1. Data Structure for Sub-menus
+const settingsData = {
+    'Individual Security Control': [
+        'Feed Control',
+        'Creator Choice',
+        'Choices of Living',
+        'Join Our Security Program'
+    ],
+    'General Settings': [
+        'Profile Showcase',
+        'Account Deactivation',
+        'Date of Joining'
+    ],
+    'Privacy': [
+        'Account Privacy',
+        'Blocked',
+        'In-appropriate User',
+        'Close User'
+    ]
+};
+
+// 2. Function to SLIDE INTO a Sub-category
+function showSubCategory(categoryName) {
+    const items = settingsData[categoryName];
+
+    // Build the HTML for the sub-menu items
+    let itemsHTML = '<div class="settings-list">';
+    items.forEach(item => {
+        // Using the existing .settings-item class for styling
+        itemsHTML += `<div class="settings-item submenu-item">${item}</div>`; 
+    });
+    itemsHTML += '</div>';
+
+    // Update the details screen content
+    detailsScreen.innerHTML = itemsHTML;
+
+    // SLIDE ANIMATION: Add class to container to shift its position
+    settingsContainer.classList.add('details-active');
+
+    // HEADER UPDATE: Change title and show back button
+    settingsTitle.innerText = categoryName;
+    settingsHeader.classList.add('details-active');
+}
+
+// 3. Function to SLIDE BACK to Main Menu
+function goBack() {
+    // SLIDE ANIMATION: Remove class to shift container back
+    settingsContainer.classList.remove('details-active');
+
+    // HEADER UPDATE: Restore title and hide back button
+    settingsTitle.innerText = 'Settings';
+    settingsHeader.classList.remove('details-active');
+
+    // Optional: Clear details screen content
+    setTimeout(() => {
+        detailsScreen.innerHTML = '';
+    }, 300); 
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDvZYHuZ2NHVrTpS3NhVS0f1wDeW-phZ10",
+    authDomain: "shaktiind-31e08.firebaseapp.com",
+    databaseURL: "https://shaktiind-31e08-default-rtdb.firebaseio.com",
+    projectId: "shaktiind-31e08",
+    storageBucket: "shaktiind-31e08.firebasestorage.app",
+    messagingSenderId: "394230439792",
+    appId: "1:394230439792:web:2178e633cff48093f5b9b5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const mobile = localStorage.getItem("logged_user_mobile");
+let allUsers = []; // New global array to store all user data
+
+// Load User Data (Existing Function)
+async function loadProfile() {
+    const snap = await get(ref(db, "shaktiind/users"));
+    if (snap.exists()) {
+        const users = snap.val();
+        let userData = null;
+
+        for (let k in users) {
+            allUsers.push(users[k]); // Populate the global list
+            if (users[k].mobile === mobile) {
+                userData = users[k];
+            }
+        }
+
+        if (userData) {
+            document.getElementById("profilePic").src = userData.profilePic;
+            document.getElementById("profileName").innerText = userData.username;
+            document.getElementById("profileBio").innerText = userData.bio;
+            document.getElementById("profileDesc").innerText = userData.description;
+        }
+
+        setupSearch(); // Initialize search after loading all users
+    }
+}
+
+// NEW: Search and Profile Navigation Logic
+function setupSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const searchResultsDiv = document.getElementById('searchResults');
+
+    // 1. Handle Input
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        searchResultsDiv.innerHTML = ''; // Clear old results
+
+        if (query.length > 0) {
+            const filteredUsers = allUsers.filter(user => 
+                user.username.toLowerCase().includes(query)
+            ).slice(0, 5); // Limit to top 5 results
+
+            if (filteredUsers.length > 0) {
+                let resultsHTML = '';
+                filteredUsers.forEach(user => {
+                    // We use the mobile number as a unique ID to identify the user
+                    resultsHTML += `
+                        <div class="search-result-item" data-mobile="${user.mobile}">
+                            <img class="search-profile-pic" src="${user.profilePic || 'placeholder.jpg'}" alt="Pic">
+                            <span class="search-username">${user.username}</span>
+                        </div>
+                    `;
+                });
+                searchResultsDiv.innerHTML = resultsHTML;
+                searchResultsDiv.style.display = 'block';
+                attachResultClickListeners();
+            } else {
+                searchResultsDiv.innerHTML = '<div style="padding: 10px; font-size:0.9rem; color:#999;">No users found.</div>';
+                searchResultsDiv.style.display = 'block';
+            }
+        } else {
+            searchResultsDiv.style.display = 'none';
+        }
+    });
+    
+    // Hide results when search bar loses focus, but wait briefly
+    searchInput.addEventListener('blur', () => {
+        setTimeout(() => {
+            searchResultsDiv.style.display = 'none';
+        }, 150); 
+    });
+    
+    // Show results when search bar gets focus if there's text
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim().length > 0 && searchResultsDiv.innerHTML !== '') {
+            searchResultsDiv.style.display = 'block';
+        }
+    });
+}
+
+// NEW: Attach Click Handler to Results
+function attachResultClickListeners() {
+    document.querySelectorAll('.search-result-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const targetMobile = this.getAttribute('data-mobile');
+            
+            // CRITICAL: We store the target user's mobile number in a new session key
+            // This key can be used by 'profile_page.html' to load the correct user's data.
+            sessionStorage.setItem('target_user_mobile', targetMobile);
+            
+            // Navigate to the profile page
+            window.location.href = './profile_page.html';
+        });
+    });
+}
+
+loadProfile();
+</script>
+</body>
+</html>

@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <title>SHAKTI-IND — Safety</title>
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #ffffff;
+            --muted: #7b7272;
+            --saffron: #FF8A2B;
+            --saffron-soft: rgba(255, 138, 43, 0.08);
+            --green: #138808;
+            --accent-1: linear-gradient(90deg, #FF8A2B 0%, #FFB36B 100%);
+            --card-radius: 14px;
+            --shadow-soft: 0 10px 30px rgba(22, 22, 22, 0.06);
+            --shadow-weak: 0 6px 18px rgba(22, 22, 22, 0.04);
+            --container-gap: 22px;
+            --text-1: #000000;
+            --text: #0448f5;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .topbar {
+            position: fixed;
+            top: 14px;
+            left: 18px;
+            right: 18px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+        }
+
+        .logo {
+            font-weight: 900;
+            letter-spacing: 2px;
+            font-size: 1.05rem;
+            background: linear-gradient(90deg, var(--saffron) 50%, var(--green) 50%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .compact-user-info {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 8px 12px;
+            box-shadow: var(--shadow-weak);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .info-profile-photo {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--green);
+        }
+
+        .info-details {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .info-username {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .info-bio {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        .right-nav-bar {
+            position: fixed;
+            right: 22px;
+            top: 110px;
+            width: 52px;
+            height: 72%;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            z-index: 20;
+            padding: 8px 4px;
+        }
+
+        .nav-item {
+            background: var(--surface);
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-weak);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            cursor: pointer;
+            transition: transform .12s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .main {
+            position: absolute;
+            left: 18px;
+            right: 92px;
+            top: 110px;
+            bottom: 18px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: var(--container-gap);
+            align-items: start;
+            padding: 10px 8px;
+        }
+
+        .panel-left {
+            background: var(--surface);
+            border-radius: var(--card-radius);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            padding: 22px;
+            box-shadow: var(--shadow-soft);
+            overflow: auto;
+        }
+
+        .panel-left h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .categories {
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .category-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #fff 0%, #fbfbfb 100%);
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: box-shadow .15s ease, transform .12s ease, background .12s;
+        }
+
+        .category-item:hover {
+            box-shadow: var(--shadow-weak);
+            transform: translateY(-4px);
+        }
+
+        .cat-icon {
+            font-size: 1.2rem;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: var(--saffron-soft);
+        }
+
+        .category-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-text .title {
+            font-weight: 700;
+            font-size: 0.96rem;
+        }
+
+        .category-text .sub {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .panel-right {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            height: 100%;
+            overflow: auto;
+             scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .panel-right-header {
+            background: transparent;
+            padding: 0 6px;
+        }
+
+        .panel-right h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: -0.2px;
+        }
+
+        .panel-right p.lead {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+            max-width: 860px;
+        }
+
+        .pills {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+        }
+
+        .pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: white;
+            box-shadow: 0 6px 18px rgba(15, 15, 15, 0.04);
+        }
+
+        .pill.wm {
+            background: var(--saffron);
+        }
+
+        .pill.an {
+            background: linear-gradient(90deg, #2ecc71, #1fa055);
+        }
+
+        .pill.he {
+            background: linear-gradient(90deg, #ff5d66, #ff7f87);
+        }
+
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        .safety-code {
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #fff, #fbfbfb);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 12px 30px rgba(12, 12, 12, 0.04);
+            transition: transform .12s ease, box-shadow .12s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .safety-code:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 44px rgba(12, 12, 12, 0.06);
+        }
+
+        .code-title {
+            font-weight: 900;
+            font-size: 0.98rem;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-short {
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.35;
+        }
+
+        .quick-activate {
+            background: transparent;
+            border: none;
+            font-weight: 800;
+            font-size: 0.82rem;
+            padding: 6px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--saffron);
+            box-shadow: none;
+            justify-self: end;
+        }
+
+        /* inline detail - hide scrollbar while keeping scroll functionality */
+        .code-detail {
+            margin-top: 18px;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            background: linear-gradient(180deg, #fff, #fcfcfc);
+            box-shadow: 0 18px 40px rgba(12, 12, 12, 0.04);
+            display: none;
+            min-height: 140px;
+            overflow: auto;
+        }
+
+        /* --- Hide scrollbar but keep scrolling --- */
+        /* Chrome, Edge, Safari */
+        .code-detail::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
+            display: none;
+        }
+
+        /* Firefox */
+        .code-detail {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* ensure inner content still scrolls with mouse/touch/keyboard */
+
+        .detail-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .detail-left {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .detail-code {
+            font-weight: 900;
+            font-size: 1.05rem;
+            color: #222;
+        }
+
+        .detail-title {
+            font-weight: 800;
+            font-size: 1.16rem;
+            color: #111;
+        }
+
+        .detail-desc {
+            margin-top: 12px;
+            color: #333;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .detail-actions {
+            margin-top: 14px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: var(--saffron);
+            color: white;
+            box-shadow: 0 8px 26px rgba(255, 138, 43, 0.12);
+        }
+
+        .btn.ghost {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            color: #222;
+        }
+
+        .spec-popup {
+            position: fixed;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: rgba(8, 8, 8, 0.36);
+            z-index: 60;
+        }
+
+        .spec-card {
+            width: 92%;
+            max-width: 760px;
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 30px 70px rgba(10, 10, 10, 0.14);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .spec-card .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 1.06rem;
+            color: var(--muted);
+        }
+
+        /* Video gallery styles */
+        #videoGallery {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .video-thumb {
+            flex: 1 1 320px;
+            min-width: 260px;
+            max-width: 46%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: var(--shadow-weak);
+            background: #000;
+            cursor: pointer;
+            position: relative;
+            aspect-ratio: 16/9;
+        }
+
+        .video-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-thumb .vmeta {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            background: rgba(0, 0, 0, 0.55);
+            color: white;
+            padding: 6px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.86rem;
+        }
+
+        /* overlay player */
+        #videoOverlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 8, 8, 0.75);
+            z-index: 1200;
+            padding: 18px;
+        }
+
+        #videoOverlay .player-card {
+            width: min(1100px, 96%);
+            background: transparent;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        #videoOverlay iframe {
+            width: 100%;
+            height: calc(100vw * 0.45);
+            max-height: 72vh;
+            border: none;
+            border-radius: 10px;
+        }
+
+        #videoOverlay .close-x {
+            position: absolute;
+            right: -6px;
+            top: -6px;
+            background: #fff;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+        }
+
+        @media (max-width: 980px) {
+            .main {
+                grid-template-columns: 1fr;
+                top: 92px;
+                right: 14px;
+                left: 14px;
+                bottom: 14px;
+            }
+
+            .right-nav-bar {
+                display: none;
+            }
+
+            .topbar {
+                top: 8px;
+            }
+
+            .video-thumb { max-width: 100%; }
+            #videoOverlay iframe { height: 48vh; }
+        }
+
+        /* Live stats styles (kept) */
+        .live-stats { padding: 12px; border-radius: 12px; background: linear-gradient(180deg,#fff,#fcfcfc); border:1px solid rgba(233, 190, 190, 0.03); box-shadow: var(--shadow-weak); }
+        .stats-row { display:flex; gap:10px; margin-bottom:8px; }
+        .stat-card { flex:1; background:#fff; padding:10px;border-radius:10px; text-align:center; border:1px solid rgba(0,0,0,0.04); }
+        .stat-val { font-weight:900; font-size:1.25rem; color:#3903ff; }
+        .stat-label { font-size:0.82rem; color:var(--muted); margin-top:6px; }
+
+        .activations-list { list-style:none; padding:8px 0 0 0; margin:0; display:flex; flex-direction:column; gap:8px; max-height:160px; overflow:auto; }
+        .activation-item { display:flex; justify-content:space-between; gap:8px; align-items:center; padding:8px; border-radius:10px; background:#fff; border:1px solid rgba(0,0,0,0.03); box-shadow:0 6px 18px rgba(0,0,0,0.03); font-size:0.88rem; }
+        .activation-left { display:flex; gap:8px; align-items:center; }
+        .activation-code { font-weight:800; color:#15a90d; }
+        .activation-meta { color:var(--muted); font-size:0.82rem; }
+        .activations-list {
+            scrollbar-width: none;        /* Firefox */
+            -ms-overflow-style: none;     /* IE/Edge */
+        }
+
+        .activations-list::-webkit-scrollbar {
+            display: none;                /* Chrome/Safari */
+        }
+
+        /* ---------- Live-stats modal expand + overlay styles ---------- */
+
+        /* Keep hiding scrollbar as before */
+        .activations-list { scrollbar-width: none; -ms-overflow-style: none; }
+        .activations-list::-webkit-scrollbar { display: none; }
+
+        /* Backdrop overlay (inserted dynamically) */
+        #liveStatsBackdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(6, 6, 6, 0.36);
+          backdrop-filter: blur(6px) saturate(120%);
+          z-index: 900;
+          opacity: 0;
+          transition: opacity .28s ease;
+          pointer-events: none;
+        }
+
+        /* Visible backdrop */
+        #liveStatsBackdrop.show { opacity: 1; pointer-events: auto; }
+
+        /* expanded state applied to the element */
+        .live-stats.expanded {
+          position: fixed;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%) scale(1);
+          width: min(820px, 94%);
+          max-height: 84vh;
+          overflow: auto;
+          padding: 20px;
+          border-radius: 16px;
+          box-shadow: 0 36px 80px rgba(6,12,20,0.32);
+          z-index: 1001;
+          animation: popIn .22s ease;
+        }
+
+        @keyframes popIn {
+          from { transform: translate(-50%, -46%) scale(0.98); opacity: 0.95; }
+          to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .live-stats .live-close-btn:focus { outline: 3px solid rgba(73, 164, 243, 0.18); outline-offset: 3px; }
+
+        /* --- new additon ----  */
+        :root {
+          --topbar-space: 110px; /* header/topbar total space (matches .main top) */
+        }
+
+        .panel-left,
+        .panel-right {
+          max-height: calc(100vh - var(--topbar-space) - 18px);
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .panel-left {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .categories {
+          flex: 0 0 auto;
+        }
+
+        .live-stats {
+          flex: 0 0 auto;
+          width: 100%;
+          min-width: 0;
+        }
+
+        .activations-list {
+          max-height: 220px;
+          overflow: auto;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        .activations-list::-webkit-scrollbar { display: none; }
+
+        .panel-right {
+          box-sizing: border-box;
+          padding-bottom: 18px;
+        }
+
+        body.live-stats-open {
+          overflow: hidden !important;
+          height: 100vh;
+        }
+
+        .settings-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(6px);
+    z-index: 999999;
+}
+
+.settings-container {
+    width: 480px;
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 15px;
+    padding: 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    overflow: hidden;          /* remove ALL scrollbars */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.settings-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;     /* center the title */
+  padding: 14px 18px;
+  border-bottom: 1px solid #eee;
+  gap: 8px;
+  background: #fff;
+}
+
+.close-settings-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #444;
+    position: absolute;
+    right: 16px;
+    top: 12px;
+}
+
+.settings-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #0b5394;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 40px; /* reserve space so title doesn't collide with buttons */
+}
+
+
+.close-settings-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #0b5394;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background .12s ease, color .12s;
+}
+
+.close-settings-btn:hover,
+.close-settings-btn:focus {
+  background: rgba(255, 138, 43, 0.08);
+  color: #000;
+  outline: none;
+}
+
+/* ensure header's children do not create inner scrollbars */
+.settings-container .settings-list,
+.settings-screen {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* visual polish for arrow/close characters so they look crisp */
+.back-btn, .close-settings-btn {
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.back-btn {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #0b5394;
+  font-size: 1.3rem;
+  font-weight: 800;
+  cursor: pointer;
+  pointer-events: none;      /* disabled until made visible */
+  opacity: 0;                /* hidden by default */
+  transition: opacity .18s ease, background .12s;
+}
+.settings-header.details-active .back-btn,
+.settings-header.details-active + .settings-container .back-btn { /* defensive */
+  pointer-events: auto;
+  opacity: 1;
+}
+.back-btn:hover,
+.back-btn:focus {
+  background: rgba(6, 90, 170, 0.06);
+  outline: none;
+  box-shadow: 0 6px 16px rgba(12,12,12,0.06);
+}
+
+.settings-header.details-active .back-btn {
+    opacity: 1;
+    pointer-events: auto;
+
+}
+
+.settings-container-inner {
+    width: 200%;
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.settings-container-inner.details-active {
+    transform: translateX(-50%);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.settings-screen {
+    width: 50%;
+    flex-shrink: 0;
+     scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.settings-list {
+    max-height: calc(80vh - 60px);
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.settings-list::-webkit-scrollbar {
+    display: none;
+}
+
+
+.settings-item {
+    padding: 14px;
+    margin-bottom: 12px;
+    background: #fafafa;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    color : black ;
+    transition: 0.2s;
+}
+
+.settings-item:hover {
+    transform: translateX(5px);
+}
+
+.settings-item.has-submenu {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logout {
+    background: #ffecec;
+    border-color: #ffbcbc;
+    color: #d00;
+}
+
+.logout:hover {
+    background: #ff4444;
+    color: white;
+}
+
+.logout-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000000;
+}
+
+.logout-box {
+    background: rgb(255, 255, 255);
+    padding: 25px;
+    width: 300px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* BACKDROP */
+.logout-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    z-index: 1000000;
+}
+
+/* CARD */
+.logout-card {
+    background: #ffffff;
+    width: 350px;
+    padding: 24px 22px;
+    border-radius: 16px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.18);
+    animation: fadePop 0.25s ease;
+    text-align: center;
+}
+
+/* TITLE */
+.logout-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0057ff;
+}
+
+/* MESSAGE */
+.logout-message {
+    margin-top: 12px;
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+/* BUTTON ROW */
+.logout-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+/* CANCEL BUTTON */
+.btn-secondary {
+    padding: 10px 18px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+    background: #e4e4e4;
+}
+
+/* LOGOUT BUTTON */
+.btn-danger {
+    padding: 10px 18px;
+    background: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-danger:hover {
+    background: #e53535;
+    box-shadow: 0 6px 20px rgba(255,0,0,0.25);
+}
+
+/* POP ANIMATION */
+@keyframes fadePop {
+    0% { transform: scale(0.92); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="logo">
+            <span class="saffron">SHAKTI</span><span class="green">-IND</span>
+        </div>
+        <div id="messageTicker" style="margin-top:8px;display:flex;align-items:center;gap:12px">
+  <div style="font-weight:700;color:#ff0000">Live</div>
+  <div id="tickerText" style="font-size:0.95rem;color:var(--muted)">No messages yet</div>
+</div>
+        <div style="display:flex; gap:12px; align-items:center; pointer-events:none;">
+            <div class="compact-user-info" style="pointer-events:auto;">
+                <img id="compactProfilePic" class="info-profile-photo" src="" alt="profile">
+                <div class="info-details">
+                    <div id="compactProfileName" class="info-username">Loading...</div>
+                    <div id="compactProfileBio" class="info-bio">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="right-nav-bar" aria-hidden="false">
+        <div class="nav-item" title="Home"  onclick="location.href='HP2.html'">🏠</div>
+        <div class="nav-item" title="Safety" onclick="location.href='safetypage.html'">🚨</div>
+        <div class="nav-item" title="Community" onclick="location.href='community.html'">👥</div>
+        <div class="nav-item" title="Profile" onclick="location.href='profile_page.html'">👤</div>
+        <div class="nav-item" title="Profile" onclick="location.href='chat.html'">💬</div>
+        <div class="nav-item" title="settings-icon" onclick="openSettings()">⚙️</div>
+    </div>
+
+    <div class="main" role="main">
+
+        <aside class="panel-left" aria-label="Safety categories">
+            <h3>Safety Categories</h3>
+
+            <div class="categories" role="list">
+                <div class="category-item" role="button" tabindex="0" data-type="wm" aria-pressed="true">
+                    <div class="cat-icon">👩‍🦰👨</div>
+                    <div class="category-text">
+                        <div class="title">Women & Men Safety</div>
+                        <div class="sub">Personal, workplace & travel safety</div>
+                    </div>
+                </div>
+
+                <div class="category-item" role="button" tabindex="0" data-type="an" aria-pressed="false">
+                    <div class="cat-icon" style="background: rgba(50,200,120,0.07)">🐾🌱</div>
+                    <div class="category-text">
+                        <div class="title">Animals & Nature</div>
+                        <div class="sub">Animal welfare & environmental alerts</div>
+                    </div>
+                </div>
+
+                <div class="category-item" role="button" tabindex="0" data-type="he" aria-pressed="false">
+                    <div class="cat-icon" style="background: rgba(255,90,100,0.06)">❤️‍🩹🚨</div>
+                    <div class="category-text">
+                        <div class="title">Humanity & Emergency</div>
+                        <div class="sub">Medical, disaster & rescue</div>
+                    </div>
+                </div>
+            </div>
+            <div class="live-stats" aria-live="polite" style="margin-top:16px">
+  <h4 style="margin:0 0 10px 0;font-size:0.95rem;font-weight:800;color:#222">Live activity</h4>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val" id="stat-activations">—</div>
+      <div class="stat-label">Activations (today)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="stat-saved">—</div>
+      <div class="stat-label">People saved</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="stat-evidence">—</div>
+      <div class="stat-label">Evidence helpful</div>
+    </div>
+  </div>
+
+  <div class="activations-header" style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+    <div style="font-weight:700;color:#333;font-size:0.9rem">Recent activations</div>
+    <div style="font-size:0.82rem;color:var(--muted)">Live</div>
+  </div>
+
+  <ul id="activationsList" class="activations-list" aria-live="polite"></ul>
+</div>
+        </aside>
+
+        <section class="panel-right" id="safetyPanel">
+            <div class="panel-right-header">
+                <h2 id="panelHeading">Women & Men Safety</h2>
+                <p class="lead" id="panelLead"></p>
+                <div class="pills" id="pillsRow" aria-hidden="true"></div>
+            </div>
+
+            <div id="codesGrid" class="codes-grid" aria-live="polite"></div>
+
+            <!-- Video gallery shows when no code detail is open -->
+            <div id="videoGallery" aria-hidden="false" aria-live="polite">
+                <!-- thumbnails injected by JS -->
+            </div>
+
+            <!-- inline detail area -->
+            <div id="codeDetail" class="code-detail" role="region" aria-live="polite" aria-hidden="true"></div>
+        </section>
+    </div>
+
+    <div class="spec-popup" id="specPopup" aria-hidden="true">
+        <div class="spec-card" role="dialog" aria-modal="true">
+            <span class="close-btn" onclick="closeSpec()"></span>
+            <div id="specContent"></div>
+        </div>
+    </div>
+
+    <!-- Video overlay -->
+    <div id="videoOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="player-card" id="playerCard">
+            <button class="close-x" id="videoOverlayClose" aria-label="Close video">✖</button>
+            <iframe id="overlayIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
+    <!-- SETTINGS POPUP -->
+<div id="settingsPopup" class="settings-popup">
+    <div class="settings-container">
+
+        <div class="settings-content">
+
+           <div class="settings-header" role="toolbar" aria-label="Settings header">
+  <button id="backButton" class="back-btn" onclick="goBack()" aria-label="Back">
+    ‹
+  </button>
+
+  <div id="settingsTitle" class="settings-title" role="heading" aria-level="2">
+    Settings
+  </div>
+
+  <button class="close-settings-btn" onclick="closeSettings()" aria-label="Close settings">
+    ✕
+  </button>
+</div>
+
+
+            <div id="settingsContainer" class="settings-container-inner">
+
+                <div id="mainMenu" class="settings-screen">
+                    <div id="mainSettingsList" class="settings-list">
+
+                        <div class="settings-item has-submenu" onclick="showSubCategory('safety rules')">
+                            Safety Rules <span class="settings-item-arrow">▶</span>
+                        </div>
+                        <div class="settings-item has-submenu" onclick="showSubCategory('General Settings')">
+                            General Settings <span class="settings-item-arrow">▶</span>
+                        </div>
+                        <div class="settings-item has-submenu" onclick="showSubCategory('Privacy')">
+                            Privacy <span class="settings-item-arrow">▶</span>
+                        </div>
+
+                        <div class="settings-item">Security</div>
+                        <div class="settings-item">Parenting</div>
+                        <div class="settings-item">Dashboard</div>
+                        <div class="settings-item">User Data Visualization</div>
+                        <div class="settings-item">HSS (Human Safety Score)</div>
+                        <div class="settings-item">Contact</div>
+                        <div class="settings-item">Activity</div>
+                        <div class="settings-item">Profile Protection</div>
+
+                        <div class="settings-item logout" onclick="showLogout()">SHAKTI-IND Logout</div>
+
+                    </div>
+                </div>
+
+                <div id="detailsScreen" class="settings-screen"></div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- LOGOUT POPUP -->
+<div id="logoutConfirm" class="logout-popup">
+  <div class="logout-card">
+    
+    <h3 class="logout-title">Logout Confirmation</h3>
+    <p class="logout-message">Are you sure you want to logout from <strong>SHAKTI-IND</strong>?</p>
+
+    <div class="logout-actions">
+      <button class="btn-secondary" onclick="closeLogout()">Cancel</button>
+      <button class="btn-danger" onclick="confirmLogout()">Logout</button>
+    </div>
+
+  </div>
+</div>
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDvZYHuZ2NHVrTpS3NhVS0f1wDeW-phZ10",
+            authDomain: "shaktiind-31e08.firebaseapp.com",
+            databaseURL: "https://shaktiind-31e08-default-rtdb.firebaseio.com",
+            projectId: "shaktiind-31e08",
+            storageBucket: "shaktiind-31e08.firebasestorage.app",
+            messagingSenderId: "394230439792",
+            appId: "1:394230439792:web:2178e633cff48093f5b9b5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const mobile = localStorage.getItem("logged_user_mobile");
+
+        async function loadProfile() {
+            try {
+                const snap = await get(ref(db, "shaktiind/users"));
+                if (snap.exists()) {
+                    const users = snap.val();
+                    let userData = null;
+                    for (let k in users) {
+                        if (users[k].mobile === mobile) { userData = users[k]; break; }
+                    }
+                    if (userData) {
+                        document.getElementById("compactProfilePic").src = userData.profilePic || "";
+                        document.getElementById("compactProfileName").innerText = userData.username || "User";
+                        document.getElementById("compactProfileBio").innerText = userData.bio || "";
+                    } else {
+                        document.getElementById("compactProfileName").innerText = "Guest User";
+                        document.getElementById("compactProfileBio").innerText = "Not logged in";
+                    }
+                } else {
+                    document.getElementById("compactProfileName").innerText = "No users";
+                    document.getElementById("compactProfileBio").innerText = "";
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById("compactProfileName").innerText = "Error";
+                document.getElementById("compactProfileBio").innerText = "";
+            }
+        }
+        loadProfile();
+
+        // sample codes
+        const safetyCodes = {
+            wm: [
+                { code: "WMS-101", title: "WorkSpace Safety Code", short: "AI-assisted reporting, guided evidence collection and legal help.", long: "Purpose: Help victims report workplace harassment safely.\n\nFeatures:\n- Guided evidence collection (photos, timestamps, chat logs)\n- Anonymous reporting option\n- Step-by-step legal guidance and local help centers\n- Option to send location & summary to trusted contacts\n\nUsage:\n1. Tap this code to open the detailed panel.\n2. Follow the guided evidence collection steps.\n3. Choose Anonymous or Named reporting.\n4. Submit and contact a legal or support partner if needed.", tags: ["Workplace", "Reporting", "Legal"] },
+                { code: "WMS-0101", title: "Shakti-Code", short: "Send live location and audio to trusted contacts & authorities.", long: "Purpose: Provide an immediate distress signal with minimal user interaction.\n\nFeatures:\n- One-tap SOS sends live location and short audio recording\n- Auto-call to pre-configured emergency numbers\n- Repeated alerts if not acknowledged\n\nUsage:\n1. Press 'Activate' in the detail panel to send an SOS.\n2. The app will share your live location and a short audio clip.\n3. Trusted contacts receive the alert and can call for help.\n4. Authorities are notified where available.", tags: ["SOS", "Location", "Immediate"] },
+                { code: "WMS-RAG", title: "Anti Ragging & Anti Harrasment", short: "To eradicate harassment and ragging from roots.", long: "To keep the college students to be in limits and to precisely help them with this ragging and harassment\n\nFeatures:\n- Safe Anti-ragging wakeword activate\n- Evidence collection using our voice , video auto capturing models\n- your buddy for hostellers , working outsiders and women precisely\n\nUsage:\n1. Enable a wakeword for the evidence collection (similar to the shakti-code).\n2. If someone is harassing or abusing you just use this wakeword to collect the information as Proof Of Act ( POA ), the app will double encrypt your evidence and stored it using blockchain safely.\n3. Using this evidence you can raise a complaint on the act over anti ragging and harassment and behalf of you we shakti stand as the strong pillar with you", tags: ["AHAR", "Safe Education", "No to ragging"] },
+                { code: "WMS-150", title: "Travel Safety Protocol", short: "Route monitoring, unsafe-area alerts and companion-tracking.", long: "Purpose: Keep travelers safe on-the-go.\n\nFeatures:\n- Route-sharing with live ETA\n- Unsafe area alerts based on crowd-sourced reports\n- Auto-check-in prompts and fallback actions\n\nUsage:\n1. Enable route sharing with trusted contacts.\n2. If you deviate from route or enter an unsafe area, the app alerts contacts.\n3. Use 'Auto check-in' to confirm safety; failure triggers fallback actions.", tags: ["Travel", "Monitoring", "Alerts"] }
+            ],
+            an: [
+                { code: "ANS-201", title: "Street Animal Protection", short: "Report injured or sick street animals, request animal rescue.", long: "Purpose: Provide a quick way to help street animals.\n\nFeatures:\n- Report with photo, location, and severity level\n- Connects to nearby NGOs and volunteers\n- Track rescue status and updates\n\nUsage:\n1. Tap to open the detail panel and attach photo and location.\n2. Mark severity and submit.\n3. Monitor the rescue status and volunteer responses.", tags: ["Animal", "Rescue", "NGO"] },
+                { code: "ANS-240", title: "Forest Fire Alert", short: "Community-reported fire alerts combined with official data.", long: "Purpose: Early detection & community alerts for forest fires.\n\nFeatures:\n- Report smoke/fire with geolocation\n- Alert nearby communities and forestry services\n- Provide safety evacuation suggestions\n\nUsage:\n1. Report immediate signs of smoke or fire with photo and location.\n2. The app notifies nearby users and forestry services.\n3. Follow evacuation guidance shared in the panel.", tags: ["Environment", "Fire", "Alert"] },
+                { code: "ANS-260", title: "Waterbody Pollution Report", short: "Report pollution events with photos and location metadata.", long: "Purpose: Rapid reporting for water pollution.\n\nFeatures:\n- Capture multimedia evidence with timestamp\n- Notify environmental authorities and local community groups\n- Track resolution status\n\nUsage:\n1. Use the detail panel to attach photos and a short description.\n2. Choose authority or NGO recipients and submit.\n3. Track the reported incident until resolution.", tags: ["Pollution", "Environment", "Report"] }
+            ],
+            he: [
+                { code: "HES-301", title: "Medical Emergency Response", short: "Quick-request for nearest ambulance & first-aid steps.", long: "Purpose: Reduce response time for medical emergencies.\n\nFeatures:\n- One-tap request for nearest ambulance services\n- First-aid guidance for common emergencies\n- Auto-share patient vitals if available and consented\n\nUsage:\n1. Tap this code to open the detail panel.\n2. Press 'Activate' to request nearest ambulance.\n3. Follow step-by-step first-aid guidance displayed in the panel.", tags: ["Medical", "Ambulance", "First-aid"] },
+                { code: "HES-320", title: "Disaster Management", short: "Report infrastructure damage, request rescue and shelter info.", long: "Purpose: Coordinate community response during disasters.\n\nFeatures:\n- Damage assessment reporting (photos + severity)\n- Shelter & resource mapping\n- Volunteer coordination and task assignment\n\nUsage:\n1. Use the detail panel to report damage with photos and priority.\n2. View nearby shelters and volunteer tasks.\n3. Coordinate with responders through the panel's messaging options.", tags: ["Disaster", "Shelter", "Coordination"] },
+{
+  code: "HES-376",
+  title: "Ambulance Route Management",
+  short: "Optimize ambulance routing, ETA tracking and priority dispatching.",
+  long: "Purpose: Improve ambulance response time and coordination during medical emergencies by providing optimized routing, live ETA tracking, and priority dispatch.\n\nFeatures:\n- Real-time route optimization using traffic and road-condition data\n- Live ETA sharing with hospitals and family contacts\n- Priority dispatch flags for high-severity cases\n- Automatic rerouting if roads are blocked or congested\n- Integration points for ambulance telemetry (speed, location, status)\n\nUsage:\n1. When an ambulance is requested, select 'Ambulance Route Management' to create a priority dispatch.\n2. The system calculates the fastest route and sends ETA updates to the hospital and designated contacts.\n3. Dispatchers can flag high-priority cases to pre-alert hospitals and clear routes where supported.\n4. If roadway changes occur, the route updates automatically and notifies all stakeholders.\n\nNotes:\n- For full functionality, enable location permissions and, where available, integrate local traffic APIs and ambulance telemetry feeds.",
+  tags: ["Ambulance", "Routing", "Dispatch", "ETA"]
+},
+                { code: "HES-350", title: "Lost-Person Reporting", short: "Register lost-person data and broadcast on local networks.", long: "Purpose: Assist in locating missing persons rapidly.\n\nFeatures:\n- Centralized missing person report form\n- Broadcast to local community & volunteers\n- Check-in / sighting reports with location stamps\n\nUsage:\n1. Fill the missing-person form in the detail panel and submit.\n2. The report is broadcast to local networks and volunteers.\n3. Track sightings and updates from the community.", tags: ["Missing", "Search", "Broadcast"] }
+            ]
+        };
+
+        const codesGridEl = document.getElementById('codesGrid');
+        const detailEl = document.getElementById('codeDetail');
+        const headingEl = document.getElementById('panelHeading');
+        const leadEl = document.getElementById('panelLead');
+        const pillsRow = document.getElementById('pillsRow');
+        const videoGalleryEl = document.getElementById('videoGallery');
+        const videoOverlay = document.getElementById('videoOverlay');
+        const overlayIframe = document.getElementById('overlayIframe');
+        const videoOverlayClose = document.getElementById('videoOverlayClose');
+
+        // mapping for dedicated pages for each code (exact keys must match item.code)
+        const codeToPage = {
+            "WMS-101": "shakti_code_WMS-101.html",
+            "WMS-0101": "shakti_code_WMS-0101.html",
+            "WMS-RAG": "shakti_code_WMS-RAG.html",
+            "WMS-150": "shakti_code_WMS-150.html",
+            "ANS-201": "shakti_code_ANS-201.html",
+            "ANS-240": "shakti_code_ANS-240.html",
+            "ANS-260": "shakti_code_ANS-260.html",
+            "HES-301": "shakti_code_HES-301.html",
+            "HES-320": "shakti_code_HES-320.html",
+            "HES-350": "shakti_code_HES-350.html"
+            // add more mapping entries as you create pages
+        };
+
+        // ----------------- VIDEO GALLERY (20+ videos, rotating pair) -----------------
+        // Replace/add up to 20+ video objects here; each must be {id: 'YouTubeID', title: 'Video Title'}
+        const demoVideos = [
+          { id: '-V4vEyhWDZ0', title: 'Self Defence For Women' },
+          { id: 'qUz93CyNIz0', title: 'Men Stress And Management' },
+          { id: 'd6ce6sGnwxg', title: 'Democratic Nation' },
+          { id: '9Kj4T05UdMA', title: 'Sexual Health & Consequenses' },
+          { id: 'Y0F1cICm9IM', title: 'Mens Mental Health' },
+          { id: 'ysRvYxznrq4', title: 'WOmen Myth About Period' },
+          { id: '8_RHb7Y4L9Y', title: 'Bad Touch Vs Good Touch' },
+          { id: 'nXWeVsz7zyo', title: 'Empovering Women Is Failing Women?' },
+          { id: 'FVzHBWoIGEw', title: 'Women Leadership' },
+          { id: 'UAWK9CjOhMg', title: "Animals Don't deserve curelty" },
+          { id: 'pu4TAKVCW0s', title: 'Real India' },
+          { id: 'JYPyI1agpiw', title: 'Trapped Children' },
+          { id: 'pqnSihfif50', title: 'The Marraige Trap' },
+          { id: 'Pgom8LRF8hQ', title: 'The Rape : India' },
+          { id: '8WJ69m0PZKw', title: 'Why In India ?' },
+          { id: 'YkuAm0ZLTfY', title: 'Sexology : Improve Yours' },
+          { id: 'mcp_fX9TSYg', title: 'Why Human Into Monsters' },
+          { id: 'nr_Cw9gCL5c', title: 'Language War' },
+          { id: 'P5Pg-yPRriI', title: 'Delhi : Is Safe?' },
+          { id: 'dpzM0Wcaiyo', title: 'Radhe Radha : Real Love' }
+          // add more if needed
+        ];
+
+        // Rotation configuration: default 30 seconds (change to 15*1000 for 15s)
+        const ROTATE_INTERVAL_MS = 30 * 1000;
+
+        // internal state for rotation & overlay pause
+        let rotateTimer = null;
+        let isOverlayPlaying = false;
+        window.__shaktiDetailVisible = false; // will be updated by MutationObserver below
+
+        // helper: pick n distinct random items from an array
+        function pickNRandom(arr, n) {
+            const copy = arr.slice();
+            const out = [];
+            n = Math.min(n, copy.length);
+            for (let i = 0; i < n; i++) {
+                const idx = Math.floor(Math.random() * copy.length);
+                out.push(copy.splice(idx, 1)[0]);
+            }
+            return out;
+        }
+
+        // render a given list of videos (usually two) into the #videoGallery
+        function renderVideosList(list) {
+            if (!videoGalleryEl) return;
+            videoGalleryEl.innerHTML = '';
+            if (!list || list.length === 0) {
+                const p = document.createElement('div');
+                p.style.color = 'var(--muted)';
+                p.style.fontWeight = '700';
+                p.style.padding = '12px';
+                p.textContent = 'No videos configured.';
+                videoGalleryEl.appendChild(p);
+                videoGalleryEl.style.display = 'flex';
+                videoGalleryEl.setAttribute('aria-hidden','false');
+                return;
+            }
+
+            list.forEach(v => {
+                const thumb = document.createElement('div');
+                thumb.className = 'video-thumb';
+                thumb.tabIndex = 0;
+                thumb.setAttribute('role','button');
+
+                const img = document.createElement('img');
+                img.src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`;
+                img.alt = v.title || v.id;
+                img.loading = 'lazy';
+
+                const meta = document.createElement('div');
+                meta.className = 'vmeta';
+                meta.textContent = v.title || 'Play video';
+
+                thumb.appendChild(img);
+                thumb.appendChild(meta);
+
+                thumb.addEventListener('click', () => openOverlayVideo(v.id));
+                thumb.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') openOverlayVideo(v.id); });
+
+                videoGalleryEl.appendChild(thumb);
+            });
+
+            videoGalleryEl.style.display = 'flex';
+            videoGalleryEl.setAttribute('aria-hidden','false');
+        }
+
+        // public renderVideos: used by hideDetailShowVideos()
+        function renderVideos() {
+            // initial immediate render: choose two
+            const uniqueVideos = Array.from(new Set(demoVideos.map(d => JSON.stringify(d)))).map(x => JSON.parse(x));
+            const pair = pickNRandom(uniqueVideos, Math.min(2, uniqueVideos.length));
+            renderVideosList(pair);
+        }
+
+        // rotation: replace the currently visible pair every ROTATE_INTERVAL_MS
+        function rotateOnce() {
+            // pause conditions
+            if (isOverlayPlaying) return;
+            if (window.__shaktiDetailVisible) return;
+
+            const uniqueVideos = Array.from(new Set(demoVideos.map(d => JSON.stringify(d)))).map(x => JSON.parse(x));
+            const pair = pickNRandom(uniqueVideos, Math.min(2, uniqueVideos.length));
+            renderVideosList(pair);
+        }
+
+        function startRotation() {
+            stopRotation();
+            rotateOnce(); // initial
+            rotateTimer = setInterval(rotateOnce, ROTATE_INTERVAL_MS);
+        }
+
+        function stopRotation() {
+            if (rotateTimer) {
+                clearInterval(rotateTimer);
+                rotateTimer = null;
+            }
+        }
+
+        // overlay open/close (these keep the same names used elsewhere)
+        function openOverlayVideo(ytId) {
+            overlayIframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+            videoOverlay.style.display = 'flex';
+            videoOverlay.setAttribute('aria-hidden','false');
+            // pause rotation while user watches
+            isOverlayPlaying = true;
+            stopRotation();
+            setTimeout(() => videoOverlayClose?.focus(), 60);
+        }
+
+        function closeOverlayVideo() {
+            videoOverlay.style.display = 'none';
+            videoOverlay.setAttribute('aria-hidden','true');
+            overlayIframe.src = '';
+            isOverlayPlaying = false;
+            if (!window.__shaktiDetailVisible) startRotation();
+        }
+
+        // attach overlay listeners (safe to reattach)
+        if (videoOverlayClose) {
+            try {
+                const newClose = videoOverlayClose.cloneNode(true);
+                videoOverlayClose.parentNode.replaceChild(newClose, videoOverlayClose);
+                newClose.addEventListener('click', closeOverlayVideo);
+            } catch (e) {
+                videoOverlayClose.addEventListener('click', closeOverlayVideo);
+            }
+        }
+        if (videoOverlay) {
+            videoOverlay.addEventListener('click', function(e){
+                if (e.target === videoOverlay) closeOverlayVideo();
+            });
+        }
+        document.addEventListener('keydown', function(e){
+            if (e.key === 'Escape') {
+                if (videoOverlay.style.display === 'flex') closeOverlayVideo();
+            }
+        });
+
+        // Observe detailEl to pause/resume rotation when code detail opens/closes
+        if (detailEl) {
+            const detObserver = new MutationObserver(() => {
+                const visible = detailEl.style.display !== 'none' && detailEl.getAttribute('aria-hidden') !== 'true';
+                window.__shaktiDetailVisible = visible;
+                if (visible) {
+                    stopRotation();
+                } else {
+                    // only resume if overlay is not playing
+                    if (!isOverlayPlaying) startRotation();
+                }
+            });
+            detObserver.observe(detailEl, { attributes: true, attributeFilter: ['style','aria-hidden'] });
+        }
+
+        // Start the rotation loop now
+        startRotation();
+
+        // rest of your original module functions remain unchanged (renderCategory, showDetail, hideDetailShowVideos, etc.)
+        // mapping and category rendering code below is intentionally unchanged and follows after the video logic in this script.
+        // (Everything else from the original script is preserved above/below.)
+        // ------------------------------------------------------------------------
+
+        // mapping and category rendering functions (unchanged)
+        function renderCategory(type) {
+            const title = (type === 'wm') ? "Women & Men Safety" : (type === 'an') ? "Animals & Nature" : "Humanity & Emergency";
+            headingEl.textContent = title;
+            leadEl.textContent = "Available safety codes — click a code to see full specification and recommended actions.";
+            pillsRow.style.display = 'flex';
+
+            codesGridEl.innerHTML = '';
+            const arr = safetyCodes[type] || [];
+            arr.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'safety-code';
+                card.tabIndex = 0;
+
+                // Build card children instead of innerHTML to safely attach listeners
+                const top = document.createElement('div');
+                top.className = 'code-title';
+                const leftTitle = document.createElement('div');
+                leftTitle.textContent = `${item.code} — ${item.title}`;
+                leftTitle.style.fontWeight = '900';
+                leftTitle.style.fontSize = '0.95rem';
+                const quickBtn = document.createElement('button');
+                quickBtn.className = 'quick-activate';
+                quickBtn.type = 'button';
+                quickBtn.textContent = 'Activate';
+                quickBtn.title = `Quick activate ${item.code}`;
+                quickBtn.style.color = "Red";
+
+                top.appendChild(leftTitle);
+                top.appendChild(quickBtn);
+
+                const short = document.createElement('div');
+                short.className = 'code-short';
+                short.textContent = item.short;
+
+                card.appendChild(top);
+                card.appendChild(short);
+
+                // click the card to show detail
+                card.addEventListener('click', (evt) => {
+                    // if user clicked the quick button, ignore card click
+                    if (evt.target.closest('.quick-activate')) return;
+                    showDetail(item);
+                });
+
+                card.addEventListener('keypress', e => { if (e.key === 'Enter' || e.key === ' ') showDetail(item); });
+
+                // quick activate button navigates immediately
+                quickBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const target = codeToPage[item.code];
+                    if (target) {
+                        window.location.href = target;
+                        return;
+                    }
+                    const codeParam = encodeURIComponent(item.code);
+                    window.location.href = `shakti_code.html?code=${codeParam}`;
+                });
+
+                codesGridEl.appendChild(card);
+            });
+
+            // When category changes, hide detail and show videos
+            hideDetailShowVideos();
+        }
+
+        // show detail: hide video gallery, show detailEl
+        function showDetail(item) {
+            // hide videos
+            videoGalleryEl.style.display = 'none';
+            videoGalleryEl.setAttribute('aria-hidden','true');
+
+            detailEl.style.display = 'block';
+            detailEl.setAttribute('aria-hidden', 'false');
+            detailEl.innerHTML = '';
+
+            const top = document.createElement('div'); top.className = 'detail-top';
+            const left = document.createElement('div'); left.className = 'detail-left';
+            const codeBox = document.createElement('div'); codeBox.className = 'detail-code'; codeBox.textContent = item.code;
+            const titleBox = document.createElement('div'); titleBox.className = 'detail-title'; titleBox.textContent = item.title;
+            left.appendChild(codeBox); left.appendChild(titleBox);
+
+            const right = document.createElement('div'); right.style.display = 'flex'; right.style.gap = '10px'; right.style.alignItems = 'center';
+
+            const tagsWrap = document.createElement('div');
+            (item.tags || []).forEach(t => {
+                const tEl = document.createElement('span');
+                tEl.style.padding = '6px 10px';
+                tEl.style.borderRadius = '999px';
+                tEl.style.background = '#f7f7f7';
+                tEl.style.fontWeight = '700';
+                tEl.style.marginRight = '8px';
+                tEl.style.fontSize = '0.85rem';
+                tEl.textContent = t;
+                tagsWrap.appendChild(tEl);
+            });
+
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'btn ghost';
+            closeBtn.textContent = 'Close';
+            closeBtn.onclick = () => { hideDetailShowVideos(); };
+
+            right.appendChild(tagsWrap);
+            right.appendChild(closeBtn);
+
+            top.appendChild(left); top.appendChild(right);
+
+            const desc = document.createElement('div'); desc.className = 'detail-desc'; desc.textContent = item.long;
+
+            const actions = document.createElement('div'); actions.className = 'detail-actions';
+            const actBtn = document.createElement('button'); actBtn.className = 'btn primary'; actBtn.textContent = 'Activate';
+            const moreBtn = document.createElement('button'); moreBtn.className = 'btn ghost'; moreBtn.textContent = 'More Info';
+            moreBtn.onclick = () => openPopup(item);
+            const shareBtn = document.createElement('button'); shareBtn.className = 'btn ghost'; shareBtn.textContent = 'Share';
+            shareBtn.onclick = () => {
+                const shareText = `${item.code} — ${item.title}\n\n${item.short}`;
+                if (navigator.share) navigator.share({ title: item.title, text: shareText }).catch(() => { });
+                else navigator.clipboard?.writeText(shareText).then(() => alert('Copied to clipboard')).catch(()=>{/* ignore */});
+            };
+
+            // Activation navigation for the Activate button
+            actBtn.onclick = () => {
+                const target = codeToPage[item.code];
+                if (target) {
+                    window.location.href = target;
+                    return;
+                }
+                const codeParam = encodeURIComponent(item.code);
+                window.location.href = `shakti_code.html?code=${codeParam}`;
+            };
+
+            actions.appendChild(actBtn); actions.appendChild(moreBtn); actions.appendChild(shareBtn);
+
+            detailEl.appendChild(top);
+            detailEl.appendChild(desc);
+            detailEl.appendChild(actions);
+
+            let usage = '';
+            if (item.long && item.long.indexOf('Usage:') !== -1) usage = item.long.split('Usage:')[1].trim();
+            else usage = "Follow the recommended steps above. Use 'Activate' to open the full code map and take action.";
+
+            const usageBox = document.createElement('div');
+            usageBox.style.marginTop = '12px';
+            usageBox.style.padding = '12px';
+            usageBox.style.background = '#fff';
+            usageBox.style.border = '1px solid rgba(0,0,0,0.03)';
+            usageBox.style.borderRadius = '10px';
+            usageBox.style.color = '#333';
+            usageBox.style.whiteSpace = 'pre-line';
+            usageBox.textContent = 'Usage:\n' + usage;
+            detailEl.appendChild(usageBox);
+
+            detailEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Hide detail and show videos
+        function hideDetailShowVideos() {
+            detailEl.style.display = 'none';
+            detailEl.setAttribute('aria-hidden', 'true');
+            detailEl.innerHTML = '';
+            renderVideos();
+        }
+
+        function openPopup(item) {
+            const popup = document.getElementById('specPopup');
+            const content = document.getElementById('specContent');
+
+            content.innerHTML = '';
+            const wrapper = document.createElement('div');
+            wrapper.style.position = 'relative';
+            wrapper.style.padding = '6px 6px 12px 6px';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.id = 'popupCloseBtn';
+            closeBtn.setAttribute('aria-label','Close popup');
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.right = '12px';
+            closeBtn.style.top = '8px';
+            closeBtn.style.border = 'none';
+            closeBtn.style.background = 'transparent';
+            closeBtn.style.fontSize = '20px';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.textContent = '✖';
+            closeBtn.addEventListener('click', closeSpec);
+
+            const codeEl = document.createElement('div');
+            codeEl.style.fontWeight = '900';
+            codeEl.style.fontSize = '1.02rem';
+            codeEl.style.color = '#0b5394';
+            codeEl.textContent = item.code;
+
+            const titleEl = document.createElement('div');
+            titleEl.style.fontWeight = '800';
+            titleEl.style.fontSize = '1.22rem';
+            titleEl.style.marginTop = '6px';
+            titleEl.style.color = '#0b5394';
+            titleEl.textContent = item.title;
+
+            const longEl = document.createElement('div');
+            longEl.style.marginTop = '10px';
+            longEl.style.color = '#444';
+            longEl.style.whiteSpace = 'pre-line';
+            longEl.textContent = item.long;
+
+            wrapper.appendChild(closeBtn);
+            wrapper.appendChild(codeEl);
+            wrapper.appendChild(titleEl);
+            wrapper.appendChild(longEl);
+
+            content.appendChild(wrapper);
+
+            popup.style.display = 'flex';
+            popup.setAttribute('aria-hidden', 'false');
+
+            requestAnimationFrame(()=> {
+                closeBtn.focus?.();
+            });
+        }
+
+        function closeSpec() {
+            const popup = document.getElementById('specPopup'); if (!popup) return;
+            popup.style.display = 'none'; popup.setAttribute('aria-hidden', 'true');
+            const content = document.getElementById('specContent'); if (content) content.innerHTML = '';
+        }
+
+        (function attachOverlayHandler(){
+            const popup = document.getElementById('specPopup');
+            if (!popup) return;
+            popup.addEventListener('click', function (evt) {
+                if (evt.target === popup) {
+                    closeSpec();
+                }
+            });
+            const content = document.getElementById('specContent');
+            if (content) {
+                content.addEventListener('click', function (evt) {
+                    evt.stopPropagation();
+                });
+            }
+        })();
+
+        document.querySelectorAll('.category-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const t = el.getAttribute('data-type');
+                renderCategory(t);
+                document.querySelectorAll('.category-item').forEach(c => c.setAttribute('aria-pressed', c === el ? 'true' : 'false'));
+            });
+            el.addEventListener('keypress', e => { if (e.key === 'Enter' || e.key === ' ') el.click(); });
+        });
+
+        // initial render
+        renderCategory('wm');
+
+        
+
+        // ESC key closes popup and inline detail and overlay
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                closeSpec();
+                if (detailEl) { detailEl.style.display = 'none'; detailEl.innerHTML = ''; detailEl.setAttribute('aria-hidden', 'true'); }
+                closeOverlayVideo();
+                hideDetailShowVideos();
+            }
+        });
+    </script>
+<script>
+/* ---------- DEMO: Live ticker + stats + activations (no Firebase) ---------- */
+(function startDemoFeed() {
+  const tickerText = document.getElementById('tickerText');
+  const statActivations = document.getElementById('stat-activations');
+  const statSaved = document.getElementById('stat-saved');
+  const statEvidence = document.getElementById('stat-evidence');
+  const activationsList = document.getElementById('activationsList');
+
+  // Demo data
+  const demoMessages = [
+
+  // ----- ENGLISH -----
+  "Shakti helped me — a stranger intervened and I reached home safely.",
+  "SOS triggered — community arrived in under 7 minutes.",
+  "Evidence kit made my complaint strong and undeniable.",
+  "Route alert saved me from entering an unsafe zone.",
+  "Voice wakeword detected instantly — support activated.",
+  "Officer rerouted and reached faster due to Shakti AI.",
+  "Live audio captured everything — justice became easier.",
+  "A silent SOS saved me when I couldn’t speak.",
+  "Trusted contacts received my alert even on low signal.",
+  "One alert today prevented a major incident.",
+
+  // ----- हिंदी (Hindi) -----
+  "शक्ति ने वक्त पर मदद भेजी — मैं सुरक्षित हूँ।",
+  "आवाज़ से SOS ट्रिगर हुआ — सुरक्षा तुरंत पहुँची।",
+  "सबूत अपने-आप रिकॉर्ड हो गया — सच सामने आया।",
+  "खतरा ज़ोन अलर्ट मिला — मैंने रास्ता बदल लिया।",
+  "मुझे डर लग रहा था, शक्ति ने मेरी लोकेशन भेज दी।",
+  "सीनियर का रैगिंग प्रयास रोक दिया गया।",
+  "गार्ड्स 3 मिनट में पहुँच गए — धन्यवाद शक्ति।",
+  "मदद मेरे पास आने से पहले ही अलर्ट पहुँच गया।",
+  "शक्ति ने वही सुना, जो मैं बोल भी नहीं पाई।",
+  "अनजान व्यक्ति पीछा कर रहा था — शक्ति ने सबको बता दिया।",
+
+  // ----- தமிழ் (Tamil) -----
+  "சக்தி எச்சரிக்கை அனுப்பியது — நான் பாதுகாப்பாக இருப்பேன்.",
+  "வாய்ஸ் வேக் வார்டு வேலை செய்தது — உதவி வந்துவிட்டது.",
+  "ஆபத்தான பகுதி என்று தெரிவித்து சாலை மாற்றியது.",
+  "ரகசியமாக புகார் செய்தேன் — சக்தி எனக்கு துணை.",
+  "பயந்த நேரத்தில் SOS எடுத்து பார்த்தது உயிர் காப்பாற்றியது.",
+  "ஹாஸ்டலில் ராகிங் முயற்சி உடனே தடுக்கப்பட்டது.",
+  "என் இருப்பிடத்தை நண்பர்கள் உடனே பார்த்தார்கள்.",
+  "உதவி 5 நிமிடத்தில் வந்தது — சக்தி நன்றி!",
+  "ஆடியோ சான்று தானாகவே பதிவானது.",
+  "ஒரு வார்த்தை சொல்லாமலேயே சக்தி என்னை காப்பாற்றியது.",
+
+  // ----- తెలుగు (Telugu) -----
+  "శక్తి అలర్ట్ పంపింది — నేను సేఫ్‌గా ఉన్నాను.",
+  "వాయిస్ SOS వెంటనే గుర్తించింది.",
+  "ప్రూఫ్ ఆటోమేటిక్‌గా రికార్డ్ అయ్యింది.",
+  "ప్రమాద ప్రాంతం దగ్గరికి వెళ్తున్నాను — శక్తి హెచ్చరించింది.",
+  "నాకు ఫోన్ పట్టలేకపోయాను, కానీ శక్తి స్పందించింది.",
+  "రాగింగ్ ప్రయత్నం వెంటనే ఆపబడింది.",
+  "స్నేహితులకు నా లొకేషన్ రియల్‌టైమ్‌లో చేరింది.",
+  "పోలీస్ ETA తగ్గింది — AI రూట్ ఆప్టిమైజ్ చేసింది.",
+  "వాలంటీర్స్ 4 నిమిషాల్లో వచ్చారు.",
+  "శక్తి నాతో మాట్లాడినట్టే అనిపించింది — ధైర్యం ఇచ్చింది.",
+
+  // ----- ಕನ್ನಡ (Kannada) -----
+  "ಶಕ್ತಿ ಅಲರ್ಟ್ ಕಳುಹಿಸಿದ ಕಾರಣ ನಾನು ಸುರಕ್ಷಿತನಾದೆ.",
+  "ವಾಯ್ಸ್ ವೇಕ್ವರ್ಡ್ ಕೇಳಗಂತಲೆ ಸಹಾಯ ಬಂತು.",
+  "ಆಪಾದೆ ಪ್ರದೇಶ ತಪ್ಪಿಸಲು ಮಾರ್ಗ ಬದಲಾಯಿಸಿದೆ.",
+  "ಸಾಕ್ಷ್ಯ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ದಾಖಲಾಗಿದೆ.",
+  "ಹಿಂಬಾಲಿಸುತ್ತಿದ್ದ ವ್ಯಕ್ತಿಯನ್ನು ಶಕ್ತಿ ಪತ್ತೆಹಚ್ಚಿತು.",
+  "ರ್ಯಾಗಿಂಗ್ ಪ್ರಯತ್ನ ತಕ್ಷಣ ನಿಲ್ಲಿಸಲಾಯಿತು.",
+  "ಪೊಲೀಸರ ಆಗಮನ ಸಮಯವನ್ನು AI ಕಡಿಮೆ ಮಾಡಿತು.",
+  "ನನ್ನ ಲೈವ್ ಲೊಕೇಶನ್ ಸ್ನೇಹಿತರಿಗೆ ತಲುಪಿತು.",
+  "ನನ್ನ ಮಾತಿಲ್ಲದ ಕಿರುಚುಗೂ ಶಕ್ತಿ ಸ್ಪಂದಿಸಿತು.",
+  "ಸಹಾಯ ಸಮುದಾಯ 6 ನಿಮಿಷಗಳಲ್ಲಿ ತಲುಪಿತು.",
+
+  // ----- മലയാളം (Malayalam) -----
+  "ശക്തി സമയം തെറ്റാതെ സഹായം എത്തിച്ചു.",
+  "വോയ്സ് SOS കേട്ടതോടെ അലർട്ട് അയച്ചു.",
+  "തെറ്റായ വഴിയിലേക്ക് പോകുന്നത് ശക്തി കണ്ടെത്തി.",
+  "സ്വയം തെളിവുകൾ റെക്കോർഡ് ചെയ്‌തു.",
+  "പിന്തുടർന്ന ആൾയെ ശക്തി തിരിച്ചറിഞ്ഞു.",
+  "റാഗിംഗ് ശ്രമം ഉടനെ തടഞ്ഞു.",
+  "എന്റെ ലൈവ് ലൊക്കേഷൻ സുഹൃത്തുകൾക്ക് ലഭിച്ചു.",
+  "പോലീസ് സമയത്ത് എത്താൻ AI വഴികാട്ടി.",
+  "എനിക്ക് ഭയന്നപ്പോൾ ശക്തി സംസാരിച്ചതുപോലെ തോന്നി.",
+  "ഒരു ശബ്‌ദം പോലും പറയാനാകാതെ ഞാൻ SOS ചെയ്തു.",
+
+  // ----- MIXED MULTI-LINGUAL CATCHY SHORT LINES -----
+  "Shakti on — fear gone.",
+  "Naanga irukkom, neenga safe. (Tamil)",
+  "Aap akela nahi ho — Shakti with you.",
+  "Neevu helakke agalla — Shakti kelthide. (Kannada)",
+  "Nuvvu safe, enduku tension? Shakti undi! (Telugu)",
+  "He/She followed me… Shakti followed him back!",
+  "Fear ended — support started.",
+  "Safety mode ON — danger mode OFF.",
+  "Ragging stopped — courage won.",
+  "A single alert changed everything.",
+  "Shakti heard what I could not say.",
+  "Safety is not a feature, it’s a promise.",
+  "Your voice, our protection.",
+  "Alert sent — hope delivered.",
+  
+  // ----- EXTRA SHORT POWERFUL ONES -----
+  "Shakti watching. You’re safer.",
+  "SOS sent. Help coming.",
+  "Danger detected. Route updated.",
+  "Wakeword heard. Support activated.",
+  "You are not alone — ever.",
+  "AI flagged risk — avoided.",
+  "Live monitoring saved the moment.",
+  "Proof locked. Justice unlocked.",
+  "Team notified — standby.",
+  "Campus safer today — thanks to alerts.",
+  "Hero of the day: the one who reported.",
+  "Your safety matters — always.",
+  "One alert = one life saved.",
+  "Community stronger, fear weaker.",
+  "Alert acknowledged — you're protected."
+];
+
+
+  const demoStats = {
+    activations: 28,
+    savedCount: 11,
+    evidenceHelpfulPct: 86
+  };
+
+  const demoActivations = [
+    { code: 'WMS-101', actor: 'user+91•••1234', time: Date.now() - 60_000, location: 'Mevalur' },
+    { code: 'WMS-0101', actor: 'user+91•••9876', time: Date.now() - 120_000, location: 'NH48' },
+    { code: 'WMS-150', actor: 'Anon', time: Date.now() - 240_000, location: 'Thandalam' },
+    { code: 'HES-301', actor: 'volunteer', time: Date.now() - 360_000, location: 'Palanjur' }
+  ];
+
+  // Render stats
+  function renderStats() {
+    if (statActivations) statActivations.textContent = demoStats.activations;
+    if (statSaved) statSaved.textContent = demoStats.savedCount;
+    if (statEvidence) statEvidence.textContent = demoStats.evidenceHelpfulPct + '%';
+  }
+
+  // Render activations list (most recent first)
+  function renderActivations(arr) {
+    if (!activationsList) return;
+    activationsList.innerHTML = '';
+    arr.slice(0, 8).forEach(a => {
+      const when = a.time ? new Date(a.time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+      const li = document.createElement('li');
+      li.className = 'activation-item';
+      li.innerHTML = `<div class="activation-left"><div class="activation-code">${a.code}</div>
+                      <div class="activation-meta">${a.actor} • ${a.location || ''}</div></div>
+                      <div class="activation-meta">${when}</div>`;
+      activationsList.appendChild(li);
+    });
+  }
+
+  // Simple rotating ticker
+  let tickerIndex = 0, tickerIntervalId = null;
+  function startTicker(pool) {
+    if (!tickerText) return;
+    if (tickerIntervalId) clearInterval(tickerIntervalId);
+    tickerText.textContent = pool[0] || 'No messages yet';
+    tickerIndex = 0;
+    tickerIntervalId = setInterval(() => {
+      tickerIndex = (tickerIndex + 1) % pool.length;
+      tickerText.textContent = pool[tickerIndex];
+    }, 4200);
+  }
+
+  // Initialize demo UI
+  renderStats();
+  renderActivations(demoActivations.reverse());
+  startTicker(demoMessages);
+
+  // Optional: animate small periodic stat changes to look "live"
+  setInterval(() => {
+    demoStats.activations += Math.random() > 0.7 ? 1 : 0;
+    demoStats.savedCount += Math.random() > 0.9 ? 1 : 0;
+    demoStats.evidenceHelpfulPct = Math.min(99, demoStats.evidenceHelpfulPct + (Math.random() > 0.92 ? 1 : 0));
+    renderStats();
+  }, 8000);
+
+  window.__SH_LIVE_DEMO = { demoMessages, demoStats, demoActivations, startTicker, renderStats, renderActivations };
+})();
+</script>
+
+<script>
+/* ---------- Live-stats expand / overlay behavior (no libs) ---------- */
+(function() {
+  const liveStats = document.querySelector('.live-stats');
+  if (!liveStats) return;
+
+  let backdrop = document.getElementById('liveStatsBackdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'liveStatsBackdrop';
+    document.body.appendChild(backdrop);
+  }
+
+  let closeBtn = liveStats.querySelector('.live-close-btn');
+  if (!closeBtn) {
+    closeBtn = document.createElement('button');
+    closeBtn.className = 'live-close-btn';
+    closeBtn.setAttribute('aria-label', 'Close live stats');
+    closeBtn.innerText = 'Ind';
+    closeBtn.style.display = 'none';
+    liveStats.appendChild(closeBtn);
+  }
+
+  let isOpen = false;
+  let lastScrollTop = 0;
+
+  function openLiveStats() {
+    if (isOpen) return;
+    isOpen = true;
+    backdrop.classList.add('show');
+    liveStats.classList.add('expanded');
+    closeBtn.style.display = 'inline-flex';
+    lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${lastScrollTop}px`;
+    setTimeout(() => closeBtn.focus(), 180);
+  }
+
+  function closeLiveStats() {
+    if (!isOpen) return;
+    isOpen = false;
+    backdrop.classList.remove('show');
+    liveStats.classList.remove('expanded');
+    closeBtn.style.display = 'none';
+    document.documentElement.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    window.scrollTo(0, lastScrollTop);
+  }
+
+  liveStats.addEventListener('click', function (evt) {
+    const target = evt.target;
+    if (target.closest('.live-close-btn') || target.closest('button') || target.closest('a') || target.closest('input') || target.closest('textarea')) {
+      return;
+    }
+    openLiveStats();
+  });
+
+  closeBtn.addEventListener('click', function (evt) {
+    evt.stopPropagation();
+    closeLiveStats();
+  });
+
+  backdrop.addEventListener('click', closeLiveStats);
+
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape' && isOpen) closeLiveStats();
+  });
+
+  liveStats.addEventListener('click', function(evt){ if (isOpen) evt.stopPropagation(); }, true);
+})();
+function openSettings() {
+    document.getElementById("settingsPopup").style.display = "flex";
+}
+
+function closeSettings() {
+    document.getElementById("settingsPopup").style.display = "none";
+}
+
+function showLogout() {
+    document.getElementById("logoutConfirm").style.display = "flex";
+}
+
+function closeLogout() {
+    document.getElementById("logoutConfirm").style.display = "none";
+}
+
+function confirmLogout() {
+    window.location.href = "../login_page.html";
+}
+
+// Settings Menu Logic
+const settingsContainer = document.getElementById('settingsContainer');
+const settingsTitle = document.getElementById('settingsTitle');
+const detailsScreen = document.getElementById('detailsScreen');
+const settingsHeader = document.querySelector('.settings-header');
+
+const settingsData = {
+    'safety rules': [
+        'False activaton Control',
+        'Safety Choice',
+        'Trusted contacts',
+        'Join Our Security Program'
+    ],
+    'General Settings': [
+        'Profile Showcase',
+        'Account Deactivation',
+        'Date of Joining'
+    ],
+    'Privacy': [
+        'Account Privacy',
+        'Blocked',
+        'In-appropriate User',
+        'Close User'
+    ]
+};
+
+function showSubCategory(category) {
+    let html = '<div class="settings-list">';
+    settingsData[category].forEach(item => {
+        html += `<div class="settings-item">${item}</div>`;
+    });
+    html += '</div>';
+
+    detailsScreen.innerHTML = html;
+
+    settingsContainer.classList.add('details-active');
+    settingsHeader.classList.add('details-active');
+    settingsTitle.innerText = category;
+}
+
+function goBack() {
+    settingsContainer.classList.remove('details-active');
+    settingsHeader.classList.remove('details-active');
+    settingsTitle.innerText = "Settings";
+
+    setTimeout(() => (detailsScreen.innerHTML = ""), 300);
+}
+
+</script>
+</body>
+
+</html>
